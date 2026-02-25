@@ -28,6 +28,8 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 
+
+
 //var connectionString = Environment.GetEnvironmentVariable("MONGODB_URI");
 var connectionString = "mongodb+srv://lcardenas:Walnut1978@user.xummolz.mongodb.net/?appName=User";
 if (connectionString == null)
