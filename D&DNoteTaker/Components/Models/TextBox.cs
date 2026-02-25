@@ -2,8 +2,8 @@
 {
     public class TextBox
     {
-        string? name;
-        string text;
+        string? name { get; set; }
+        string text { get; set; }
 
         public TextBox(string? name = null)
         {
