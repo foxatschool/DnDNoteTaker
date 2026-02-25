@@ -31,6 +31,7 @@ app.MapRazorComponents<App>()
 
 #region MongoDB Database Demo
 var connectionString = Environment.GetEnvironmentVariable("MONGODB_URI");
+//var connectionString = "mongodb+srv://32tiptoes:14Foxgames@user.xummolz.mongodb.net/?appName=User";
 if (connectionString == null)
 {
     Console.WriteLine("You must set your 'MONGODB_URI' environment variable. To learn how to set it, see https://www.mongodb.com/docs/drivers/csharp/current/get-started/create-connection-string");
