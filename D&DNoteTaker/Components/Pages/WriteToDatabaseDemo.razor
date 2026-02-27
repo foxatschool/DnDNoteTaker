@@ -1,0 +1,46 @@
+﻿@page "/write"
+@using D_DNoteTaker.Components.Objects
+@inject AccessService AccessService
+@rendermode InteractiveServer
+
+<PageTitle>Demo</PageTitle>
+
+<h3>WriteToDatabaseDemo</h3>
+
+<EditForm FormName="AddNewPerson" OnValidSubmit="addData" Model="tester">
+    <DataAnnotationsValidator/>
+
+    <div>
+        <label for="name">Name: </label>
+        <InputText id="name" DisplayName="Name" @bind-Value="tester.Name"/>
+        <ValidationMessage For="() => tester.Name"/>
+    </div>
+
+    <div>
+        <label for="age">Age: </label>
+        <InputNumber id="age" DisplayName="Age" @bind-Value="tester.Age"/>
+        <ValidationMessage For="() => tester.Age"/>
+    </div>
+
+    <div>
+        <label for="isAlive">Are you alive: </label>
+        <InputCheckbox id="isAlive" @bind-Value="tester.IsAlive"/>
+    </div>
+
+    <div>
+        <button type="submit">Add Data Demo</button>
+    </div>
+</EditForm>
+
+
+
+@code {
+    Testing tester = new Testing();
+
+    private async Task addData()
+    {
+        await AccessService.InsertAccessService(tester);
+        Console.Write("added Data");
+        tester = new Testing();
+    }
+}

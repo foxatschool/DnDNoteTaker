@@ -1,0 +1,33 @@
+﻿@page "/read"
+@using D_DNoteTaker.Components.Objects
+@inject AccessService AccessService
+@rendermode InteractiveServer
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Is Alive</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Testing usr in collection)
+        {
+            <tr>
+                <td>@usr.Name</td>
+                <td>@usr.Age</td>
+                <td>@usr.IsAlive</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<Testing> collection = new List<Testing>();
+
+    protected override void OnInitialized()
+    {
+        collection = AccessService.GetDatabase();
+    }
+}

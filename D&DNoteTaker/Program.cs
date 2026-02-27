@@ -1,4 +1,5 @@
 using D_DNoteTaker.Components;
+using D_DNoteTaker.Components.Objects;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Driver;
@@ -8,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddScoped<AccessService>();
 
 var app = builder.Build();
 
@@ -27,8 +30,6 @@ app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
-
-
 #region MongoDB Database Demo
 var connectionString = Environment.GetEnvironmentVariable("MONGODB_URI");
 if (connectionString == null)
@@ -41,6 +42,10 @@ var collection = client.GetDatabase("sample_mflix").GetCollection<BsonDocument>(
 var filter = Builders<BsonDocument>.Filter.Eq("title", "Back to the Future");
 var document = collection.Find(filter).First();
 Console.WriteLine(document.ToJson(new JsonWriterSettings { Indent = true }));
+#endregion
+
+#region MongoDB write demo
+IMongoCollection<Testing> demoCollection = client.GetDatabase("Tester").GetCollection<Testing>("Testing");
 #endregion
 
 app.Run();
