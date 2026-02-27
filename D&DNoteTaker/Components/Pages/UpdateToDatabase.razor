@@ -1,0 +1,69 @@
+﻿@page "/updateData"
+@using D_DNoteTaker.Components.Objects
+@inject NavigationManager NavManager
+@inject AccessService AccessService
+@rendermode InteractiveServer
+
+<PageTitle>Update Data Demo</PageTitle>
+
+<ul>
+    <li>Name: @selectedUsr.Name</li>
+    <li>Age: @selectedUsr.Age</li>
+    <li>Is Alive: @selectedUsr.IsAlive</li>
+</ul>
+
+<br/>
+<br/>
+
+<EditForm FormName="UpdateData" Model="newData">
+    <div>
+        <label for="name">Name: </label>
+        <InputText id="name" @bind-Value="newData.Name" />
+    </div>
+
+    <div>
+        <label for="age">Age: </label>
+        <InputNumber id="age" @bind-Value="newData.Age" />
+    </div>
+
+    <div>
+        <label for="isAlive">Is Alive: </label>
+        <InputCheckbox id="isAlive" @bind-Value="newData.IsAlive" />
+    </div>
+
+    <div>
+        <button type="submit" @onclick="BuildUsr">Update Test</button>
+    </div>
+
+</EditForm>
+
+@code {
+    [Parameter]
+    public string SelectedUsrId { get; set; } = GetId.selectedId;
+
+    Testing selectedUsr = new Testing();
+    Testing newData = new Testing();
+    Testing updateDataTest = new Testing();
+
+    private void BuildUsr()
+    {
+        updateDataTest.Id = selectedUsr.Id;
+        updateDataTest.Name = newData.Name != null ? newData.Name : selectedUsr.Name;
+        updateDataTest.Age = newData.Age > 0 ? newData.Age : selectedUsr.Age;
+        updateDataTest.IsAlive = newData.IsAlive;
+        UpdateData();
+    }
+
+    private async Task UpdateData()
+    {
+        // await AccessService.InsertAccessService(updateDataTest);
+        await AccessService.UpdateDatabase(SelectedUsrId, updateDataTest);
+        updateDataTest = new Testing();
+        NavManager.NavigateTo($"/read");
+    }
+
+    protected override void OnInitialized()
+    {
+        selectedUsr = AccessService.GetDatabase().Find(data => data.Id == SelectedUsrId);
+    }
+}

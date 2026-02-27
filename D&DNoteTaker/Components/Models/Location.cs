@@ -6,12 +6,17 @@ namespace D_DNoteTaker.Components.Models
     {
         [Required]
         string Name { get; set; }
+
         [Required]
-        string Environment { get; set;  }
+        string Environment { get; set; }
+
         List<String>? POIs {  get; set; }
+
         [Required]
         string Climate { get; set; }
+
         float? Population { get; set; }
+
         [Required]
         TextBox Description { get; set; }
     }
