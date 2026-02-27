@@ -1,9 +1,12 @@
-﻿namespace D_DNoteTaker.Components.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace D_DNoteTaker.Components.Models
 {
     public class TextBox
     {
-        string? name { get; set; }
-        string text { get; set; }
+        public string? name { get; set; }
+        [Required]
+        public string text { get; set; }
 
         public TextBox(string? name = null)
         {

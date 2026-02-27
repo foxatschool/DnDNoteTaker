@@ -5,13 +5,13 @@ namespace D_DNoteTaker.Components.Models
     public class Campaign
     {
         [Required]
-        int Id { get; set; }
+        string Id { get; set; }
         [Required]
-        string Name { get; set; }
+        public string Name { get; set; }
         [Required]
-        List<int> DM { get; set; }
+        public List<string> DM { get; set; }
         [Required]
-        List<int> Player { get; set; }
-        List<TextBox>? Boxes { get; set; }
+        public List<string> Player { get; set; }
+        public List<TextBox>? Boxes { get; set; }
     }
 }

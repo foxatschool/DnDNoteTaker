@@ -1,0 +1,66 @@
+﻿@page "/createcampagin"
+@using D_DNoteTaker.Components.Models
+
+
+<h3>CreateCampagin</h3>
+
+<PageTitle>Create Capagin</PageTitle>
+
+<EditForm OnValidSubmit="() => submit()" Model="@currentCampagin">
+    <label id="name">Title: </label>
+    <InputText id="name" @bind-Value="currentCampagin.Name"/>
+    <hr />
+    <EditForm OnValidSubmit="() => addPlayer(AddPerson)" Model="AddPerson">
+        <label id="dmName">Deungeon Master Name:</label>
+        <InputText id="dmName" @bind-Value="AddPerson" />
+
+        <button type="submit" class="btn btn-primary">Add Player</button>
+    </EditForm>
+    <hr />
+
+    <EditForm OnValidSubmit="() => addPlayer(AddPerson)" Model="AddPerson">
+        <label id="playerName">Player Name:</label>
+        <InputText id="playerName" @bind-Value="AddPerson"/>
+
+        <button type="submit" class="btn btn-primary">Add Player</button>
+    </EditForm>
+    <hr />
+
+    <EditForm OnValidSubmit="() => addTextBox()" Model="textBox">
+        <label id="title">Title: </label>
+        <InputText id="title" @bind-Value="textBox.name" />
+
+        <label id="body"></label>
+        <InputTextArea id="body" @bind-Value="textBox.text"/>
+
+        <button type="submit" class="btn btn-primary">Add Description</button>
+    </EditForm>
+    <hr />
+
+</EditForm>
+
+
+
+@code 
+{
+    Campaign currentCampagin = new Campaign();
+    TextBox textBox = new TextBox();
+    string AddPerson = "";
+
+    void submit()
+    {
+
+    }
+    void addPlayer(string s)
+    {
+        currentCampagin.Player.Add(s);
+    }
+    void addDM(string s)
+    {
+        currentCampagin.DM.Add(s);
+    }
+    void addTextBox()
+    {
+        currentCampagin.Boxes.Add(textBox);
+    }
+}
