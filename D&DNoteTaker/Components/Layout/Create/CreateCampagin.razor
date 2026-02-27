@@ -10,36 +10,35 @@
     <label id="name">Title: </label>
     <InputText id="name" @bind-Value="currentCampagin.Name"/>
     <hr />
-    <EditForm OnValidSubmit="() => addPlayer(AddPerson)" Model="AddPerson">
-        <label id="dmName">Deungeon Master Name:</label>
-        <InputText id="dmName" @bind-Value="AddPerson" />
-
-        <button type="submit" class="btn btn-primary">Add Player</button>
-    </EditForm>
-    <hr />
-
-    <EditForm OnValidSubmit="() => addPlayer(AddPerson)" Model="AddPerson">
-        <label id="playerName">Player Name:</label>
-        <InputText id="playerName" @bind-Value="AddPerson"/>
-
-        <button type="submit" class="btn btn-primary">Add Player</button>
-    </EditForm>
-    <hr />
-
-    <EditForm OnValidSubmit="() => addTextBox()" Model="textBox">
-        <label id="title">Title: </label>
-        <InputText id="title" @bind-Value="textBox.name" />
-
-        <label id="body"></label>
-        <InputTextArea id="body" @bind-Value="textBox.text"/>
-
-        <button type="submit" class="btn btn-primary">Add Description</button>
-    </EditForm>
-    <hr />
 
 </EditForm>
 
+<EditForm OnValidSubmit="() => addPlayer(AddPerson)" Model="AddPerson">
+    <label id="dmName">Deungeon Master Name:</label>
+    <InputText id="dmName" @bind-Value="AddPerson" />
 
+    <button type="submit" class="btn btn-primary">Add Player</button>
+</EditForm>
+<hr />
+
+<EditForm OnValidSubmit="() => addPlayer(AddPerson)" Model="AddPerson">
+    <label id="playerName">Player Name:</label>
+    <InputText id="playerName" @bind-Value="AddPerson" />
+
+    <button type="submit" class="btn btn-primary">Add Player</button>
+</EditForm>
+<hr />
+
+<EditForm OnValidSubmit="() => addTextBox()" Model="textBox">
+    <label id="title">Title: </label>
+    <InputText id="title" @bind-Value="textBox.name" />
+
+    <label id="body"></label>
+    <InputTextArea id="body" @bind-Value="textBox.text" />
+
+    <button type="submit" class="btn btn-primary">Add Description</button>
+</EditForm>
+<hr />
 
 @code 
 {
