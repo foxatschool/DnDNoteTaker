@@ -1,7 +1,10 @@
 ﻿@page "/read"
 @using D_DNoteTaker.Components.Objects
+@inject NavigationManager NavManager
 @inject AccessService AccessService
 @rendermode InteractiveServer
+
+<PageTitle>Read Data Demo</PageTitle>
 
 <table class="table">
     <thead>
@@ -9,6 +12,7 @@
             <th>Name</th>
             <th>Age</th>
             <th>Is Alive</th>
+            <th>Update Human</th>
         </tr>
     </thead>
     <tbody>
@@ -18,12 +22,19 @@
                 <td>@usr.Name</td>
                 <td>@usr.Age</td>
                 <td>@usr.IsAlive</td>
+                <td><button @onclick="() => currentUsrID(usr.Id)">Update Human</button></td>
             </tr>
         }
     </tbody>
 </table>
 
 @code {
+    private void currentUsrID(string SelectedUsrId)
+    {
+        GetId.selectedId = SelectedUsrId;
+        NavManager.NavigateTo($"/updateData");
+    }
+
     private List<Testing> collection = new List<Testing>();
 
     protected override void OnInitialized()

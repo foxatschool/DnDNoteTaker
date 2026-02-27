@@ -6,8 +6,10 @@ namespace D_DNoteTaker.Components.Models
     {
         [Required]
         string Name { get; set; }
+
         [Required]
         TextBox History { get; set; }
+
         [Required]
         List<Region> Regions { get; set; }
     }
