@@ -1,5 +1,7 @@
 using D_DNoteTaker.Components;
 using D_DNoteTaker.Components.Objects;
+using D_DNoteTaker.Data;
+using D_DNoteTaker.Data.Interfaces;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Driver;
@@ -10,7 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddScoped<AccessService>();
+builder.Services.AddScoped<IMongoRepository<Testing>>((sp) => {
+    var client = new MongoClient(Environment.GetEnvironmentVariable("MONGODB_URI"));
+    var database = client.GetDatabase("Testing");
+    MongoRepository<Testing> test = new MongoRepository<Testing>(database, "Testing");
+    return test; 
+    });
 
 var app = builder.Build();
 

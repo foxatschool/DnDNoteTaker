@@ -1,13 +1,12 @@
-﻿using MongoDB.Bson;
+﻿using D_DNoteTaker.Data.Interfaces;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.ComponentModel.DataAnnotations;
 
 namespace D_DNoteTaker.Components.Objects
 {
-    public class Testing
+    public class Testing : IDocument
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
         [Required (ErrorMessage = "Must have a name")]

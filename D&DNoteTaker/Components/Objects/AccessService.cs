@@ -7,8 +7,6 @@ namespace D_DNoteTaker.Components.Objects
     {
         private readonly IMongoCollection<Testing> _tester;
 
-        //public static List<Testing> databaseCopy { get; set; }
-
         public AccessService()
         {
             var client = new MongoClient(Environment.GetEnvironmentVariable("MONGODB_URI"));
