@@ -6,16 +6,12 @@ namespace D_DNoteTaker.Components.Models
     {
         [Required]
         string Id { get; set; }
-
         [Required]
-        string Name { get; set; }
-
+        public string Name { get; set; }
         [Required]
-        List<string> DM { get; set; }
-
+        public List<string> DM { get; set; }
         [Required]
-        List<string> Player { get; set; }
-
-        List<TextBox>? Boxes { get; set; }
+        public List<string> Player { get; set; }
+        public List<TextBox>? Boxes { get; set; }
     }
 }

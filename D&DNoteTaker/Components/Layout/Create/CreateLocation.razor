@@ -1,0 +1,56 @@
+﻿@using D_DNoteTaker.Components.Models
+
+<h3>Create Location</h3>
+
+<EditForm OnValidSubmit="submit" Model="@location">
+    <label id="name">Location Name:</label>
+    <InputText id="name" @bind-Value="location.Name"/>
+
+    <label id="environment">Type of Environment: </label>
+    <InputText id="environment" @bind-Value="location.Environment"/>
+
+    <label id="climate">Climate: </label>
+    <InputText id="climate" @bind-Value="location.Climate"/>
+
+    <label id="population">Population: </label>
+    <InputNumber id="populaion" TValue="float?" @bind-Value="location.Population"/>
+</EditForm>
+
+<EditForm OnValidSubmit="addPOI" Model="newPOI">
+    <label id="poi">Points of Intrest</label>
+    <InputText id="poi" @bind-Value="newPOI" />
+</EditForm>
+
+<hr />
+<EditForm OnValidSubmit="() => addTextBox()" Model="textBox">
+    @* <label id="title">Title: </label>
+    <InputText id="title" @bind-Value="textBox.name" /> *@
+
+    <label id="body">Description: </label>
+    <InputTextArea id="body" @bind-Value="textBox.text" />
+
+    <button type="submit" class="btn btn-primary">Add Description</button>
+</EditForm>
+<hr />
+
+
+
+@code 
+{
+    TextBox textBox = new TextBox();
+    Location location = new Location();
+    string newPOI = "";
+
+    void submit()
+    {
+
+    }
+    void addTextBox()
+    {
+        location.Description = textBox;
+    }
+    void addPOI()
+    {
+        location.POIs.Add(newPOI);
+    }
+}
