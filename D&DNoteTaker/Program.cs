@@ -1,5 +1,8 @@
 using D_DNoteTaker.Components;
+using D_DNoteTaker.Components.Models;
 using D_DNoteTaker.Components.Objects;
+using D_DNoteTaker.Data;
+using D_DNoteTaker.Data.Interfaces;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Driver;
@@ -10,7 +13,54 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddScoped<AccessService>();
+builder.Services.AddScoped<IMongoRepository<Testing>>((sp) => {
+    var client = new MongoClient(Environment.GetEnvironmentVariable("MONGODB_URI"));
+    var database = client.GetDatabase("Testing");
+    MongoRepository<Testing> test = new MongoRepository<Testing>(database, "Testing");
+    return test; 
+    });
+
+builder.Services.AddScoped<IMongoRepository<Campaign>>((sp) => {
+    var client = new MongoClient(Environment.GetEnvironmentVariable("MONGODB_URI"));
+    var database = client.GetDatabase("Campaign");
+    MongoRepository<Campaign> campaignData = new MongoRepository<Campaign>(database, "Campaign");
+    return campaignData;
+});
+
+builder.Services.AddScoped<IMongoRepository<Location>>((sp) => {
+    var client = new MongoClient(Environment.GetEnvironmentVariable("MONGODB_URI"));
+    var database = client.GetDatabase("Campaign");
+    MongoRepository<Location> locationData = new MongoRepository<Location>(database, "Location");
+    return locationData;
+});
+
+builder.Services.AddScoped<IMongoRepository<NPCs>>((sp) => {
+    var client = new MongoClient(Environment.GetEnvironmentVariable("MONGODB_URI"));
+    var database = client.GetDatabase("Campaign");
+    MongoRepository<NPCs> npcData = new MongoRepository<NPCs>(database, "NPCs");
+    return npcData;
+});
+
+builder.Services.AddScoped<IMongoRepository<Region>>((sp) => {
+    var client = new MongoClient(Environment.GetEnvironmentVariable("MONGODB_URI"));
+    var database = client.GetDatabase("Campaign");
+    MongoRepository<Region> regionData = new MongoRepository<Region>(database, "Region");
+    return regionData;
+});
+
+builder.Services.AddScoped<IMongoRepository<Sessions>>((sp) => {
+    var client = new MongoClient(Environment.GetEnvironmentVariable("MONGODB_URI"));
+    var database = client.GetDatabase("Campaign");
+    MongoRepository<Sessions> sessionData = new MongoRepository<Sessions>(database, "Sessions");
+    return sessionData;
+});
+
+builder.Services.AddScoped<IMongoRepository<Worldbuilding>>((sp) => {
+    var client = new MongoClient(Environment.GetEnvironmentVariable("MONGODB_URI"));
+    var database = client.GetDatabase("Campaign");
+    MongoRepository<Worldbuilding> worldbuildingData = new MongoRepository<Worldbuilding>(database, "Worldbuilding");
+    return worldbuildingData;
+});
 
 var app = builder.Build();
 
