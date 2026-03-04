@@ -62,6 +62,13 @@ builder.Services.AddScoped<IMongoRepository<Worldbuilding>>((sp) => {
     return worldbuildingData;
 });
 
+builder.Services.AddScoped<IMongoRepository<User>>((sp) => {
+    var client = new MongoClient(Environment.GetEnvironmentVariable("MONGODB_URI"));
+    var database = client.GetDatabase("Campaign");
+    MongoRepository<User> userData = new MongoRepository<User>(database, "Users");
+    return userData;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
