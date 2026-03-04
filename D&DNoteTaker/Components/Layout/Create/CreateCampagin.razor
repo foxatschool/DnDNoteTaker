@@ -1,5 +1,7 @@
 ﻿@page "/createcampagin"
 @using D_DNoteTaker.Components.Models
+@inject MongoRepository<Campaign> MRCampagin
+@inject MongoRepository<User> MRUser
 
 <h3>CreateCampagin</h3>
 
@@ -50,6 +52,10 @@
     void submit()
     {
         namesNotFound = "";
+        MRCampagin.GetAllAsync();
+        foreach(string player in currentCampagin.Player)
+        {
+        }
     }
 
     void addPlayer(string s)
