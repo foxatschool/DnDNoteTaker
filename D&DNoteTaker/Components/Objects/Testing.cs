@@ -1,6 +1,4 @@
 ﻿using D_DNoteTaker.Data.Interfaces;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 using System.ComponentModel.DataAnnotations;
 
 namespace D_DNoteTaker.Components.Objects

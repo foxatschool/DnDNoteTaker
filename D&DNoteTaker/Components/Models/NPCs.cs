@@ -1,9 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using D_DNoteTaker.Data.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace D_DNoteTaker.Components.Models
 {
-    public class NPCs
+    public class NPCs : IDocument
     {
+        public string Id { get; set; }
+
         [Required]
         public string Name { get; set; }
 
