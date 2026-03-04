@@ -1,7 +1,6 @@
 ﻿@page "/createcampagin"
 @using D_DNoteTaker.Components.Models
 
-
 <h3>CreateCampagin</h3>
 
 <PageTitle>Create Capagin</PageTitle>
@@ -45,10 +44,12 @@
     Campaign currentCampagin = new Campaign();
     TextBox textBox = new TextBox();
     string AddPerson = "";
+    string namesNotFound = "";
+    List<string> personsNotFound
 
     void submit()
     {
-
+        namesNotFound = "";
     }
     void addPlayer(string s)
     {
@@ -61,5 +62,13 @@
     void addTextBox()
     {
         currentCampagin.Boxes.Add(textBox);
+    }
+    void NotFound(List<string> notFound)
+    {
+        namesNotFound = "Usernames: ";
+        foreach(string person in notFound)
+        {
+            namesNotFound += $"{person}";
+        }
     }
 }
