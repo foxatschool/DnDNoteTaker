@@ -1,0 +1,45 @@
+﻿@page "/sign-up"
+@inject NavigationManager NavManager
+@inject MongoRepository<User> User
+@rendermode InteractiveServer
+
+<PageTitle>Sign-Up</PageTitle>
+
+<h3>Sign-Up</h3>
+
+<EditForm FormName="signIn" OnValidSubmit="createUser" Model="usr">
+    <DataAnnotationsValidator/>
+
+    <div>
+        <input type="hidden" bind-value="usr.Id"/>
+    </div>
+
+    <div>
+        <label for="username">UserName: </label>
+        <InputText id="username" @bind-Value="usr.UserName" />
+        <ValidationMessage For="() => usr.UserName"/>
+    </div>
+
+    <div>
+        <label for="password">Age: </label>
+        <InputText id="password" @bind-Value="usr.Password" />
+        <ValidationMessage For="() => usr.Password"/>
+    </div>
+
+    <div>
+        <button type="submit">Create Account</button>
+    </div>
+</EditForm>
+
+@code {
+    User usr = new User();
+
+    public async Task createUser()
+    {
+        await User.InsertOneAsync(usr);
+        usr = new User();
+        NavManager.NavigateTo("/login");
+    }
+
+    public void navToLoginPage() => NavManager.NavigateTo("/login");
+}

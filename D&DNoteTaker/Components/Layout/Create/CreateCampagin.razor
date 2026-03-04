@@ -45,24 +45,28 @@
     TextBox textBox = new TextBox();
     string AddPerson = "";
     string namesNotFound = "";
-    List<string> personsNotFound
+    List<string> personsNotFound;
 
     void submit()
     {
         namesNotFound = "";
     }
+
     void addPlayer(string s)
     {
         currentCampagin.Player.Add(s);
     }
+
     void addDM(string s)
     {
         currentCampagin.DM.Add(s);
     }
+
     void addTextBox()
     {
         currentCampagin.Boxes.Add(textBox);
     }
+
     void NotFound(List<string> notFound)
     {
         namesNotFound = "Usernames: ";
