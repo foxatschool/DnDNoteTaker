@@ -62,6 +62,7 @@
 
 
     }
+
     void addPlayer(string s)
     {
         List<User> users = MDBUser.GetAllAsync().Result;
@@ -71,17 +72,23 @@
         }
         currentCampagin.Player.Add(s);
     }
+
     void addDM(string s)
     {
         
         currentCampagin.DM.Add(s);
     }
+
     void addTextBox()
     {
         currentCampagin.Boxes.Add(textBox);
     }
-    void NotFound(string s)
+    void NotFound(List<string> notFound)
     {
-        
+        namesNotFound = "Usernames: ";
+        foreach(string person in notFound)
+        {
+            namesNotFound += $"{person}";
+        }
     }
 }
