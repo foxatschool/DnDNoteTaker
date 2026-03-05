@@ -1,7 +1,7 @@
 ﻿@page "/createcampagin"
 @using D_DNoteTaker.Components.Models
-@inject MongoRepository<Campaign> MRCampagin
-@inject MongoRepository<User> MRUser
+@inject MongoRepository<Campaign> MDBCampagin
+@inject MongoRepository<User> MDBUser
 
 <h3>CreateCampagin</h3>
 
@@ -15,19 +15,24 @@
 </EditForm>
 
 <EditForm OnValidSubmit="() => addPlayer(AddPerson)" Model="AddPerson">
-    <label id="dmName">Deungeon Master Name:</label>
+    <label id="dmName">Deungeon Master Username:</label>
     <InputText id="dmName" @bind-Value="AddPerson" />
 
     <button type="submit" class="btn btn-primary">Add Player</button>
 </EditForm>
-<hr />
+@* <hr /> *@
 
 <EditForm OnValidSubmit="() => addPlayer(AddPerson)" Model="AddPerson">
-    <label id="playerName">Player Name:</label>
+    <label id="playerName">Player Username:</label>
     <InputText id="playerName" @bind-Value="AddPerson" />
 
     <button type="submit" class="btn btn-primary">Add Player</button>
 </EditForm>
+
+@if(!nameNotFound.IsWhiteSpace() || !(nameNotFound == null))
+{
+    <p style="color:red">Could Not Find: @nameNotFound</p>
+}
 <hr />
 
 <EditForm OnValidSubmit="() => addTextBox()" Model="textBox">
@@ -46,35 +51,37 @@
     Campaign currentCampagin = new Campaign();
     TextBox textBox = new TextBox();
     string AddPerson = "";
-    string namesNotFound = "";
-    List<string> personsNotFound;
+    string nameNotFound = "";
 
-    void submit()
+
+    async Task submit()
     {
-        namesNotFound = "";
-        MRCampagin.GetAllAsync();
-        foreach(string player in currentCampagin.Player)
-        {
-        }
+        await MDBCampagin.InsertOneAsync(currentCampagin);
+
+
+
+
     }
     void addPlayer(string s)
     {
+        List<User> users = MDBUser.GetAllAsync().Result;
+        if (users.Find(p => p.UserName == s) == null)
+        {
+            nameNotFound = s;
+        }
         currentCampagin.Player.Add(s);
     }
     void addDM(string s)
     {
+        
         currentCampagin.DM.Add(s);
     }
     void addTextBox()
     {
         currentCampagin.Boxes.Add(textBox);
     }
-    void NotFound(List<string> notFound)
+    void NotFound(string s)
     {
-        namesNotFound = "Usernames: ";
-        foreach(string person in notFound)
-        {
-            namesNotFound += $"{person}";
-        }
+        
     }
 }
