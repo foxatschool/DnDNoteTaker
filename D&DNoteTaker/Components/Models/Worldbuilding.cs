@@ -1,12 +1,10 @@
-﻿using D_DNoteTaker.Data.Interfaces;
+﻿using D_DNoteTaker.Data;
 using System.ComponentModel.DataAnnotations;
 
 namespace D_DNoteTaker.Components.Models
 {
-    public class Worldbuilding : IDocument
+    public class Worldbuilding : Document
     {
-        public string Id { get; set; }
-
         [Required]
         string Name { get; set; }
 

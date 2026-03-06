@@ -1,7 +1,8 @@
 ﻿@page "/updateData"
 @using D_DNoteTaker.Components.Objects
 @inject NavigationManager NavManager
-@inject AccessService AccessService
+@inject IMongoRepository<Testing> Bethany
+@attribute [StreamRendering]
 @rendermode InteractiveServer
 
 <PageTitle>Update Data Demo</PageTitle>
@@ -57,13 +58,15 @@
     private async Task UpdateData()
     {
         // await AccessService.InsertAccessService(updateDataTest);
-        await AccessService.UpdateDatabase(SelectedUsrId, updateDataTest);
+        await Bethany.ReplaceOneAsync(updateDataTest);
         updateDataTest = new Testing();
-        NavManager.NavigateTo($"/read");
+        NavManager.NavigateTo($"/readgeneric");
     }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        selectedUsr = AccessService.GetDatabase().Find(data => data.Id == SelectedUsrId);
+        // selectedUsr = AccessService.GetDatabase().Find(data => data.Id == SelectedUsrId);
+        selectedUsr = await Bethany.GetByIdAsync(SelectedUsrId);
+        newData = selectedUsr;
     }
 }

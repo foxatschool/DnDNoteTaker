@@ -1,12 +1,10 @@
-﻿using D_DNoteTaker.Data.Interfaces;
+﻿using D_DNoteTaker.Data;
 using System.ComponentModel.DataAnnotations;
 
 namespace D_DNoteTaker.Components.Models
 {
-    public class Sessions : IDocument
+    public class Sessions : Document
     {
-        public string Id { get; set; }
-
         [Required]
         int SessionNum { get; set; }
 

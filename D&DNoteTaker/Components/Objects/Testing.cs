@@ -1,12 +1,11 @@
-﻿using D_DNoteTaker.Data.Interfaces;
+﻿using D_DNoteTaker.Data;
+using D_DNoteTaker.Data.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
 namespace D_DNoteTaker.Components.Objects
 {
-    public class Testing : IDocument
+    public class Testing : Document
     {
-        public string Id { get; set; }
-
         [Required (ErrorMessage = "Must have a name")]
         public string Name { get; set; }
 
