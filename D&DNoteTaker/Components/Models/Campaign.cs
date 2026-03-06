@@ -12,7 +12,7 @@ namespace D_DNoteTaker.Components.Models
         [Required]
         public List<string> DM { get; set; }
         [Required]
-        public List<string> Player { get; set; }
-        public List<TextBox> Boxes { get; set; }
+        public List<string>? Player { get; set; }
+        public List<TextBox>? Boxes { get; set; }
     }
 }

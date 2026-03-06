@@ -11,8 +11,8 @@ namespace D_DNoteTaker.Components.Models
         string Name { get; set; }
 
         [Required]
-        List<Location> Regions { get; set; }
+        List<Location> Locations { get; set; }
 
-        TextBox? Description { get; set; }
+        TextBox Description { get; set; }
     }
 }

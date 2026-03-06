@@ -8,12 +8,12 @@ namespace D_DNoteTaker.Components.Models
         public string Id { get; set; }
 
         [Required]
-        string Name { get; set; }
+        public string Name { get; set; }
 
         [Required]
-        TextBox History { get; set; }
+        public TextBox History { get; set; }
 
         [Required]
-        List<Region> Regions { get; set; }
+        public List<Region> Regions { get; set; }
     }
 }

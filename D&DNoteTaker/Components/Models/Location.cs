@@ -13,7 +13,7 @@ namespace D_DNoteTaker.Components.Models
         [Required]
         public string Environment { get; set; }
 
-        public List<String>? POIs {  get; set; }
+        public List<string>? POIs {  get; set; }
 
         [Required]
         public string Climate { get; set; }

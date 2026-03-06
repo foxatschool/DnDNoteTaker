@@ -22,32 +22,35 @@
 </EditForm>
 
 <hr />
-<EditForm OnValidSubmit="() => addTextBox()" Model="textBox">
-    @* <label id="title">Title: </label>
-    <InputText id="title" @bind-Value="textBox.name" /> *@
-
-    <label id="body">Description: </label>
-    <InputTextArea id="body" @bind-Value="textBox.text" />
-
-    <button type="submit" class="btn btn-primary">Add Description</button>
-</EditForm>
+<CreateTextBox @ref="editTextBox" mainTitle="" textTitle="Description"/>
 <hr />
 
 
 
 @code 
 {
-    TextBox textBox = new TextBox();
+    CreateTextBox? editTextBox;
     Location location = new Location();
     string newPOI = "";
 
+    public event EventHandler<Location>? EventLocation;
+
     void submit()
     {
-
+        EventLocation.Invoke(this, location);
     }
-    void addTextBox()
+
+    private void addTextBox(object? sender, TextBox textBox)
     {
         location.Description = textBox;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender && editTextBox != null)
+        {
+            editTextBox.EventBox += addTextBox;
+        }
     }
     void addPOI()
     {

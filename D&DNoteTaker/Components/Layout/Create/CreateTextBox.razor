@@ -1,0 +1,25 @@
+﻿<EditForm OnValidSubmit="() => submit()" Model="textBox">
+    <label for="Title">@mainTitle</label>
+    <InputText id="Title" @bind-Value="textBox.name"/>
+
+    <label for="text">@textTitle</label>
+    <InputTextArea id="text" @bind-Value="textBox.text"/>
+
+</EditForm>
+
+@code 
+{
+    [Parameter]
+    public string mainTitle { get; set; } = "";
+    [Parameter]
+    public string textTitle { get; set; } = "";
+
+    public event EventHandler<TextBox>? EventBox;
+
+    TextBox textBox = new TextBox();
+
+    private void submit()
+    {
+        EventBox?.Invoke(this, textBox);
+    }
+}

@@ -1,7 +1,40 @@
 ﻿@using D_DNoteTaker.Components.Models
+@inject MongoRepository<Worldbuilding> MDBWorldBuilding
 
+<h3>Create World</h3>
+
+<EditForm OnValidSubmit="() => submit()" Model="currentWorldbuilding">
+    <label id="Name">World Name:</label>
+    <InputText id="Name" @bind-Value="currentWorldbuilding.Name"/>
+    
+</EditForm>
+
+@*TODO: When created add Region CreateRegin*@
+
+<CreateTextBox @ref="textEditor" mainTitle="Describe Event:" textTitle="Event Name:" />
 
 @code 
 {
-    Worldbuilding worldbuilding = new Worldbuilding();
+
+    Worldbuilding currentWorldbuilding = new Worldbuilding();
+    CreateTextBox textEditor;
+
+
+    async Task submit()
+    {
+        await MDBWorldBuilding.InsertOneAsync(currentWorldbuilding);
+    }
+
+    private void addTextBox(object? sender, TextBox textBox)
+    {
+        currentWorldbuilding.History = textBox;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender && textEditor != null)
+        {
+            textEditor.EventBox += addTextBox;
+        }
+    }
 }
