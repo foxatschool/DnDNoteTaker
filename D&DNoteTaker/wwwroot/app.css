@@ -1,4 +1,4 @@
-/* Global defaults */
+﻿/* Global defaults */
 *,
 *::before,
 *::after {
@@ -23,18 +23,22 @@ body {
     --gutter: clamp(12px, 2vw, 28px);
     --page-pad: clamp(12px, 1.8vw, 24px);
     --content-pad: clamp(16px, 2.2vw, 34px);
-    --nav-w: clamp(120px, 10vw, 160px);
+
+    --nav-w: clamp(150px, 14vw, 220px);
     --nav-h: clamp(56px, 6vw, 72px);
     --nav-offset: clamp(10px, 1.6vw, 22px);
+
     --ink: #2b241c;
     --paper: #f4efe3;
     --paper-edge: rgba(43, 36, 28, 0.18);
     --paper-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+
     --nav-bg: #911;
     --nav-text: #f9e2c3;
     --nav-active: gold;
     --nav-outline: rgba(255, 215, 0, 0.75);
     --nav-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+
     --parchment-url: url("https://res.cloudinary.com/ez-nettools/image/upload/v1635183100/parchment-hand-painted_zfdfpt.avif");
     --parchment-slice: 32;
     --parchment-border: clamp(6px, 1.2vw, 18px);
@@ -47,129 +51,212 @@ body {
     max-width: var(--page-max);
     margin: clamp(10px, 2.2vw, 24px) auto;
     padding: var(--page-pad);
+
     background: tan;
     background-clip: padding-box;
+
     border: solid var(--parchment-border) var(--parchment-border-color);
     border-image-source: var(--parchment-url);
     border-image-slice: var(--parchment-slice) fill;
     border-image-repeat: stretch;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--nav-w);
+    column-gap: calc(var(--gutter) + var(--nav-offset));
+    align-items: start;
 }
 
+/* Sidebar */
 .sidebar {
-    width: 0 !important;
+    grid-column: 2;
+    width: auto !important;
     min-width: 0 !important;
     padding: 0 !important;
     margin: 0 !important;
     background: transparent !important;
-    overflow: visible !important; 
+    overflow: visible !important;
 }
 
-    main > .top-row,
-    .sidebar .top-row,
-    .sidebar .navbar-toggler {
-        display: none !important;
-    }
+main > .top-row,
+.sidebar .top-row,
+.sidebar .navbar-toggler {
+    display: none !important;
+}
 
+/* Main content column */
 main {
-    padding-right: calc(var(--nav-w) + var(--nav-offset) + var(--gutter));
+    grid-column: 1;
+    padding-right: 0;
 }
 
-/* Content card (paper panel)*/
+/* Content card */
 .content {
     max-width: var(--content-max);
     margin: 0 auto;
     padding: var(--content-pad);
     position: relative;
+
     color: var(--ink);
     font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
     line-height: 1.55;
     font-size: clamp(0.98rem, 0.4vw + 0.9rem, 1.08rem);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0)), repeating-linear-gradient( 180deg, rgba(43, 36, 28, 0.03) 0px, rgba(43, 36, 28, 0.03) 1px, transparent 1px, transparent 26px ), var(--paper);
-    border: 1px solid var(--paper-edge);
-    border-radius: clamp(12px, 1.2vw, 18px);
-    box-shadow: var(--paper-shadow);
+
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.45), rgba(255,255,255,0)),
+        repeating-linear-gradient(
+            180deg,
+            rgba(43,36,28,0.03) 0px,
+            rgba(43,36,28,0.03) 1px,
+            transparent 1px,
+            transparent 26px
+        ),
+        var(--paper);
+
+    border-radius: 16px;
+
+    border: 2px solid rgba(80,60,35,0.45);
+
+    box-shadow:
+        inset 0 0 0 2px rgba(255,215,120,0.35),
+        inset 0 0 0 6px rgba(60,40,20,0.15),
+        0 14px 28px rgba(0,0,0,0.25);
 }
 
-/* Nav ribbon (NavMenu) */
+.content::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border: 1px dashed rgba(120,90,40,0.45);
+    border-radius: 12px;
+    pointer-events: none;
+}
+
+/* Nav ribbon */
 .page .nav-scrollable {
     position: sticky;
     top: var(--nav-offset);
-    margin-left: auto;
+    justify-self: end;
     margin-top: var(--nav-offset);
     margin-right: var(--nav-offset);
+
     width: var(--nav-w);
+    max-width: 100%;
     min-height: var(--nav-h);
+    height: auto !important;
+
     padding: 8px 8px 16px;
+
     background: var(--nav-bg);
     box-shadow: var(--nav-shadow);
+
     z-index: 50;
-    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 50% calc(100% - 14px), 0% 100%);
+
+    clip-path: polygon(
+        0% 0%,
+        100% 0%,
+        100% 100%,
+        50% calc(100% - 14px),
+        0% 100%
+    );
 }
 
-    .page .nav-scrollable::before {
-        content: "";
-        position: absolute;
-        inset: 5px;
-        border: dotted 1px var(--nav-outline);
-        clip-path: inherit;
-        pointer-events: none;
-    }
+.page .nav-scrollable::before {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border: dotted 1px var(--nav-outline);
+    clip-path: inherit;
+    pointer-events: none;
+}
 
+.page .nav-scrollable nav.nav {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    padding-top: 10px;
+    margin: 0 !important;
+}
+
+.page .nav-scrollable .nav-item {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    flex: 0 0 auto;
+}
+
+.page .nav-scrollable .nav-link {
+    display: block !important;
+    width: 100%;
+    max-width: 100%;
+
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    text-align: center;
+
+    padding: 8px 10px !important;
+    margin: 0 !important;
+
+    font-family: ui-serif, Georgia, serif;
+    font-size: clamp(0.78rem, 0.3vw + 0.72rem, 0.94rem);
+
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.1;
+
+    color: var(--nav-text) !important;
+    text-decoration: none !important;
+
+    border-radius: 12px;
+
+    opacity: 0.92;
+
+    transition:
+        transform 120ms ease,
+        opacity 120ms ease,
+        background-color 120ms ease,
+        text-shadow 120ms ease;
+}
+
+.page .nav-scrollable .nav-link:hover {
+    opacity: 1;
+    transform: translateY(-1px);
+    text-shadow: 0 0 6px rgba(255,215,128,0.6);
+}
+
+.page .nav-scrollable .nav-link.active {
+    opacity: 1;
+    color: var(--nav-active) !important;
+    font-weight: 700;
+    background: rgba(0,0,0,0.18);
+}
+
+.page .nav-scrollable .nav-link span {
+    display: none !important;
+}
+
+/* Desktop scroll limit */
+@media (min-width: 901px) {
     .page .nav-scrollable nav.nav {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: clamp(12px, 3.2vw, 22px);
-        padding-top: 10px;
+        max-height: calc(100vh - (var(--nav-offset) * 2) - 30px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding-bottom: 6px;
+    }
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+    .page {
+        grid-template-columns: minmax(0, 1fr);
+        column-gap: 0;
     }
 
-    .page .nav-scrollable .nav-item {
-        padding: 0 !important;
-        margin: 0 !important;
-        width: auto !important;
-        flex: 0 0 auto;
-    }
-
-    .page .nav-scrollable .nav-link {
-        display: inline-flex !important;
-        align-items: center;
-        justify-content: center;
-        padding: clamp(7px, 1vw, 10px) clamp(8px, 1.1vw, 12px) !important;
-        margin: 0 !important;
-        font-family: ui-serif, Georgia, serif;
-        font-size: clamp(0.82rem, 0.35vw + 0.78rem, 0.98rem);
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        line-height: 1.1;
-        white-space: nowrap;
-        color: var(--nav-text) !important;
-        text-decoration: none !important;
-        border-radius: 999px;
-        opacity: 0.9;
-        transition: transform 120ms ease, opacity 120ms ease, background-color 120ms ease, text-shadow 120ms ease;
-    }
-
-        .page .nav-scrollable .nav-link:hover {
-            opacity: 1;
-            transform: translateY(-1px);
-            text-shadow: 0 0 6px rgba(255, 215, 128, 0.6);
-        }
-
-        .page .nav-scrollable .nav-link.active {
-            opacity: 1;
-            color: var(--nav-active) !important;
-            font-weight: 700;
-            background: rgba(0, 0, 0, 0.18);
-        }
-
-        .page .nav-scrollable .nav-link span {
-            display: none !important;
-        }
-
-/* Responsive: small screens -> bottom bar nav */
-@media (max-width: 900px) {
+    .sidebar,
     main {
-        padding-right: 0;
+        grid-column: 1;
     }
 
     .page .nav-scrollable {
@@ -177,32 +264,50 @@ main {
         left: 50%;
         bottom: 14px;
         top: auto;
+
         transform: translateX(-50%);
+
         margin: 0;
+
         width: min(92vw, 520px);
         min-height: auto;
+
         clip-path: none;
         border-radius: 16px;
+
         padding: 10px 12px;
     }
 
-        .page .nav-scrollable::before {
-            inset: 6px;
-            border-radius: 12px;
-            clip-path: none;
-        }
+    .page .nav-scrollable::before {
+        inset: 6px;
+        border-radius: 12px;
+        clip-path: none;
+    }
 
-        .page .nav-scrollable nav.nav {
-            flex-direction: row;
-            justify-content: space-evenly;
-            gap: 8px;
-            padding-top: 0;
-        }
+    .page .nav-scrollable nav.nav {
+        flex-direction: row;
+        justify-content: space-evenly;
+        gap: 8px;
+        padding-top: 0;
+        max-height: none;
+        overflow: visible;
+    }
 
-        .page .nav-scrollable .nav-link {
-            font-size: 0.85rem;
-            padding: 10px 10px !important;
-        }
+    .page .nav-scrollable .nav-item {
+        width: auto !important;
+        flex: 1 1 0;
+    }
+
+    .page .nav-scrollable .nav-link {
+        width: 100%;
+        font-size: 0.85rem;
+
+        white-space: nowrap !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        padding: 10px 10px !important;
+    }
 
     .content {
         padding-bottom: calc(var(--content-pad) + 64px);
@@ -218,17 +323,17 @@ main {
     .page {
         margin: 0;
         padding: 0;
+
         border: none;
         border-image: none;
+
         background: white;
+
+        display: block;
     }
 
     .nav-scrollable {
         display: none !important;
-    }
-
-    main {
-        padding-right: 0;
     }
 
     .content {
