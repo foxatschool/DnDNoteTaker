@@ -1,12 +1,10 @@
-﻿using D_DNoteTaker.Data.Interfaces;
+﻿using D_DNoteTaker.Data;
 using System.ComponentModel.DataAnnotations;
 
 namespace D_DNoteTaker.Components.Models
 {
-    public class TextBox : IDocument
+    public class TextBox : Document
     {
-        public string Id { get; set; }
-
         public string? name { get; set; }
         [Required]
         public string text { get; set; }
