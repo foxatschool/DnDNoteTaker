@@ -1,0 +1,47 @@
+﻿<h3>CreateNPC</h3>
+
+<EditForm OnValidSubmit="() => submit()" Model="currentNPC">
+    <label for="name">Name: </label>
+    <InputText id="name" @bind-Value="currentNPC.Name"/>
+
+    <label for="Gender">Gender: </label>
+    <InputText id="Gender" @bind-Value="currentNPC.Gender" />
+
+    <label for="aids">Aids? </label>
+    <InputCheckbox id="aids" @bind-Value="currentNPC.HasAids" />
+
+    <label for="age">Age: </label>
+    <InputNumber TValue="int" id="age" @bind-Value="currentNPC.Age" />
+
+    <label for="job">Job: </label>
+    <InputText id="job" @bind-Value="currentNPC.JobType" />
+
+    <label for="languages">Languages: </label>
+    <InputText id="languages" @bind-Value="currentNPC.Languages" />
+</EditForm>
+
+<CreateTextBox @ref="editTextBox" textTitle="Description:"/>
+
+@code 
+{
+    private NPCs currentNPC = new NPCs();
+    private CreateTextBox editTextBox;
+
+    public event EventHandler<NPCs> EventNPC;
+
+    private void submit()
+    {
+        EventNPC.Invoke(this, currentNPC);
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender && editTextBox != null)
+        {
+            editTextBox.EventBox += addTextBox;
+        }
+    }
+    private void addTextBox(object? sender, TextBox textBox)
+    {
+        currentNPC.Description = textBox;
+    }
+}

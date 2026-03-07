@@ -6,17 +6,17 @@ namespace D_DNoteTaker.Components.Models
     public class Sessions : Document
     {
         [Required]
-        int SessionNum { get; set; }
+        public int SessionNum { get; set; }
 
         [Required]
-        string Summary { get; set; }
+        public TextBox Summary { get; set; }
 
         [Required]
-        DateOnly DateOfSession { get; set; }
+        public DateOnly DateOfSession { get; set; }
 
-        List<Location>? Locations { get; set; }
+        public List<Location>? Locations { get; set; }
 
-        List<NPCs>? NPCs { get; set; }
+        public List<NPCs>? NPCs { get; set; }
 
     }
 }

@@ -6,11 +6,11 @@ namespace D_DNoteTaker.Components.Models
     public class Region : Document
     {
         [Required]
-        string Name { get; set; }
+        public string Name { get; set; }
 
         [Required]
-        List<Location> Locations { get; set; }
+        public List<Location> Locations { get; set; }
 
-        TextBox Description { get; set; }
+        public TextBox Description { get; set; }
     }
 }

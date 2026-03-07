@@ -9,6 +9,9 @@ namespace D_DNoteTaker.Components.Models
         public string UserName { get; set; }
 
         [Required (ErrorMessage = "You need a password")]
+
         public string Password { get; set; }
+
+        public string[]? Campaigns { get; set; }
     }
 }

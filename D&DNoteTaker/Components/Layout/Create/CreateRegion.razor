@@ -1,0 +1,45 @@
+﻿<h3>CreateRegion</h3>
+
+<EditForm OnValidSubmit="() => submit()" Model="title">
+    <label for="title">Region Title:</label>
+    <InputText id="title" @bind-Value="title"/>
+</EditForm>
+
+<CreateLocation @ref="editLocation"/>
+
+<CreateTextBox @ref="editTextBox" textTitle="Description:"/>
+
+@code 
+{
+    Region region = new Region();
+    public event EventHandler<Region> EventRegion;
+
+    private CreateLocation editLocation;
+    private CreateTextBox editTextBox;
+
+    private string title="";
+    private void submit()
+    {
+        EventRegion.Invoke(this, region);
+    }
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender && editTextBox != null)
+        {
+            editTextBox.EventBox += addTextBox;
+        }
+        if (firstRender && editLocation != null)
+        {
+            editLocation.EventLocation += addLocation;
+        }
+    }
+    private void addTextBox(object? sender, TextBox textBox)
+    {
+        region.Description = textBox;
+    }
+    private void addLocation(object? sender, Location location)
+    {
+        region.Locations.Add(location);
+    }
+
+}

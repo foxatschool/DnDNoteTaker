@@ -3,22 +3,24 @@
 <h3>Create Location</h3>
 
 <EditForm OnValidSubmit="submit" Model="@location">
-    <label id="name">Location Name:</label>
+    <label for="name">Location Name:</label>
     <InputText id="name" @bind-Value="location.Name"/>
 
-    <label id="environment">Type of Environment: </label>
+    <label for="environment">Type of Environment: </label>
     <InputText id="environment" @bind-Value="location.Environment"/>
 
-    <label id="climate">Climate: </label>
+    <label for="climate">Climate: </label>
     <InputText id="climate" @bind-Value="location.Climate"/>
 
-    <label id="population">Population: </label>
+    <label for="population">Population: </label>
     <InputNumber id="populaion" TValue="float?" @bind-Value="location.Population"/>
 </EditForm>
 
 <EditForm OnValidSubmit="addPOI" Model="newPOI">
-    <label id="poi">Points of Intrest</label>
+    <label for="poi">Points of Intrest</label>
     <InputText id="poi" @bind-Value="newPOI" />
+
+    <button type="submit" class="btn btn-primary">Add POI</button>
 </EditForm>
 
 <hr />
