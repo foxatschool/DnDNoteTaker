@@ -1,6 +1,5 @@
 ﻿@page "/write"
 @using D_DNoteTaker.Components.Objects
-@* @inject AccessService AccessService *@
 @inject IMongoRepository<Testing> Bethany
 @attribute [StreamRendering]
 @rendermode InteractiveServer
@@ -39,7 +38,6 @@
 
     private async Task addData()
     {
-        // await AccessService.InsertAccessService(tester);
         await Bethany.InsertOneAsync(tester);
         Console.Write("added Data");
         tester = new Testing();
