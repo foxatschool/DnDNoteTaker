@@ -1,23 +1,29 @@
 ﻿@using D_DNoteTaker.Components.Models
-@inject MongoRepository<Worldbuilding> MDBWorldBuilding
+@using D_DNoteTaker.Data.Interfaces
+@inject IMongoRepository<Worldbuilding> MDBWorldBuilding
+@attribute [StreamRendering]
+@rendermode InteractiveServer
 
 <h3>Create World</h3>
 
 <EditForm OnValidSubmit="() => submit()" Model="currentWorldbuilding">
     <label id="Name">World Name:</label>
-    <InputText id="Name" @bind-Value="currentWorldbuilding.Name"/>
-    
+    <InputText id="Name" @bind-Value="currentWorldbuilding.Name" />
+
 </EditForm>
 
-@*TODO: When created add Region CreateRegin*@
+<CreateRegion @ref="editRegion"/>
 
-<CreateTextBox @ref="textEditor" mainTitle="Describe Event:" textTitle="Event Name:" />
+<CreateTextBox @ref="textEditor" textTitle="Describe Event:" />
 
-@code 
+
+
+@code
 {
 
     Worldbuilding currentWorldbuilding = new Worldbuilding();
     CreateTextBox textEditor;
+    CreateRegion editRegion;
 
 
     async Task submit()
@@ -29,12 +35,20 @@
     {
         currentWorldbuilding.History = textBox;
     }
+    private void addRegion(object? sender, Region region)
+    {
+        currentWorldbuilding.Regions.Add(region);
+    }
 
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender && textEditor != null)
         {
             textEditor.EventBox += addTextBox;
+        }
+        if (firstRender && editRegion != null)
+        {
+            editRegion.EventRegion += addRegion;
         }
     }
 }

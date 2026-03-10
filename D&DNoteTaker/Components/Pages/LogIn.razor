@@ -1,0 +1,86 @@
+﻿@page "/login"
+@attribute [StreamRendering]
+@inject IMongoRepository<User> User
+@inject NavigationManager NavManager
+@rendermode InteractiveServer
+
+@if (users == null)
+{
+    <h3>Loading...</h3>
+} else
+{
+    @if (!userFound) {
+        <h2>No User Found</h2>
+        <h4>Make sure your username and password are both correct</h4>
+    }
+
+    <EditForm FormName="LogIn" OnValidSubmit="findUser" Model="loggedUser">
+        <DataAnnotationsValidator />
+
+        <div>
+            <label for="userName">Username: </label>
+            <InputText id="userName" DisplayName="Username" @bind-Value="loggedUser.UserName" />
+            <ValidationMessage For="() => loggedUser.UserName" />
+        </div>
+
+        <div>
+            <label for="password">Password: </label>
+            <InputText id="password" DisplayName="Password" @bind-Value="loggedUser.Password" />
+            <ValidationMessage For="() => loggedUser.Password" />
+        </div>
+
+        <div>
+            <button type="submit">Log-in</button>
+            <button type="button" @onclick="goToSignUpPage">Sign-up</button>
+        </div>
+    </EditForm>
+}
+
+@code {
+    User loggedUser = new User();
+    bool userFound = true;
+    User? foundUsr;
+    List<User> users;
+
+    private async Task findUser()
+    {
+        userFound = true;
+        foundUsr = users.FirstOrDefault(usr => usr.UserName == loggedUser.UserName && usr.Password == loggedUser.Password);
+
+        if (foundUsr == null) userFound = false;
+        else NavManager.NavigateTo("/");
+
+        loggedUser = new User();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(1500);
+
+        users = await User.GetAllAsync();
+
+        foreach (User usr in users)
+        {
+            usr.Password = decryptUserInformation(usr.Password);
+        }
+    }
+
+    private void goToSignUpPage() => NavManager.NavigateTo($"/signup");
+    
+    private string decryptUserInformation(string stringToDecrypt)
+    {
+        string decryptedString = "";
+        int shifter = 5;
+
+        for (int i = 0; i < stringToDecrypt.Length; i++)
+        {
+            int charASCIIValue = stringToDecrypt[i];
+
+            if (charASCIIValue - shifter < 33) charASCIIValue += 94;
+
+            decryptedString += (char)(charASCIIValue - shifter);
+        }
+
+        return decryptedString;
+    }
+}

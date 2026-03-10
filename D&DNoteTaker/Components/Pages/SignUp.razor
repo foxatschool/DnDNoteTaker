@@ -1,0 +1,58 @@
+﻿@page "/signup"
+@attribute [StreamRendering]
+@inject IMongoRepository<User> User
+@inject NavigationManager NavManager
+@rendermode InteractiveServer
+
+<EditForm FormName="SignUp" OnValidSubmit="addNewUserAccount" Model="newUser">
+    <DataAnnotationsValidator/>
+
+    <div>
+        <label for="userName">Username: </label>
+        <InputText id="userName" DisplayName="Username" @bind-Value="newUser.UserName" />
+        <ValidationMessage For="() => newUser.UserName" />
+    </div>
+
+    <div>
+        <label for="password">Password: </label>
+        <InputText id="password" DisplayName="Password" @bind-Value="newUser.Password" />
+        <ValidationMessage For="() => newUser.Password" />
+    </div>
+
+    <div>
+        <button type="submit">Create Account</button>
+        <button type="button" @onclick="goToLoginPage">Login</button>
+    </div>
+</EditForm>
+
+@code {
+    User newUser = new User();
+
+    private async Task addNewUserAccount()
+    {
+        newUser.Password = encryptUserInformation(newUser.Password);
+        await User.InsertOneAsync(newUser);
+        Console.Write("added new User");
+        newUser = new User();
+        goToLoginPage();
+    }
+
+    private void goToLoginPage() => NavManager.NavigateTo($"/login");
+
+    private string encryptUserInformation(string stringToEncrypt)
+    {
+        string encryptedString = "";
+        int shifter = 5;
+
+        for (int i = 0; i < stringToEncrypt.Length; i++)
+        {
+            int charASCIIValue = stringToEncrypt[i];
+
+            if (charASCIIValue + shifter > 126) charASCIIValue -= 94;
+
+            encryptedString += (char)(charASCIIValue + shifter);
+        }
+
+        return encryptedString;
+    }
+}

@@ -1,0 +1,62 @@
+﻿<h3>CreateSessions</h3>
+
+<EditForm OnValidSubmit="() => submit()" Model="currentSession">
+    <label for="sessionNum">Session Number:</label>
+    <InputNumber TValue="int" id="sessionNum" @bind-Value="currentSession.SessionNum" />
+
+    <label for="Date">Session Date:</label>
+    <InputDate TValue="DateOnly" @bind-Value="currentSession.DateOfSession" />
+</EditForm>
+
+<CreateLocation @ref="editLoacation" />
+<CreateNPC @ref="editNPC" />
+<CreateTextBox @ref="editTextBox" mainTitle="Session Title:" textTitle="Description" />
+
+@code
+{
+    private Sessions currentSession = new Sessions();
+
+    private CreateLocation editLoacation;
+    private CreateNPC editNPC;
+    private CreateTextBox editTextBox;
+
+    public event EventHandler<Sessions> eventSession;
+
+    private void submit()
+    {
+        eventSession.Invoke(this, currentSession);
+    }
+    private void addTextBox(object? sender, TextBox textBox)
+    {
+        currentSession.Summary = textBox;
+    }
+    private void addLocation(object? sender, Location location)
+    {
+        currentSession.Locations.Add(location);
+    }
+    private void addNPC(object? sender, NPCs NPC)
+    {
+        currentSession.NPCs.Add(NPC);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            if (editTextBox != null)
+            {
+                editTextBox.EventBox += addTextBox;
+            }
+            if (editLoacation != null)
+            {
+                editLoacation.EventLocation += addLocation;
+            }
+            if (editNPC != null)
+            {
+                editNPC.EventNPC += addNPC;
+            }
+        }
+
+    }
+
+}
