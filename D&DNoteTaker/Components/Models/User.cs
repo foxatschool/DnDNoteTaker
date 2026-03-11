@@ -13,6 +13,6 @@ namespace D_DNoteTaker.Components.Models
         [StringLength(int.MaxValue, MinimumLength = 8, ErrorMessage = "Passwords must be at least 8 characters long")]
         public string Password { get; set; }
 
-        public string[]? Campaigns { get; set; }
+        public List<string> Campaigns { get; set; } = new List<string>();
     }
 }

@@ -1,10 +1,85 @@
-﻿@page "/"
+﻿@page "/{AccountId?}"
+@attribute [StreamRendering]
+@rendermode InteractiveServer
+@inject NavigationManager NavMan
+@inject IMongoRepository<User> MDBUser
+@inject IMongoRepository<Campaign> MDBCampagin
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Your Campagins</h1>
+<br />
+
+@if (AccountId == null)
+{
+    <h3>Please Sign in to view Campagins</h3>
+}
+else if (campaigns.Count == 0)
+{
+    <h3>Go Ye, Have A New Adventure!</h3>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th aria-label=""></th>
+                <th aria-label=""></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Campaign campaign in campaigns)
+            {
+                <tr>
+                    <td>@campaign.Name</td>
+                    <td><button class="btn btn-primary" style="float:right;background-color:black" @onclick="() => viewCampagin(campaign)">View Campagin</button></td>
+                    <td><button class="btn btn-primary" style="float:right;background-color:red" @onclick="() => deleteCampagin(campaign)">Delete</button></td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}
+@if (AccountId != null)
+{
+    <button class="btn btn-primary" style="float:right; background-color:black; margin:40px" @onclick="() => createCampagin()">Create Campagin</button>
+}
 
 
-<h4>Meow</h4>
+@code
+{
+    [Parameter]
+    public string? AccountId { get; set; } = null;
 
-Welcome to your new app.
+    public List<Campaign> campaigns = new List<Campaign>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (AccountId != null)
+        {
+            List<Campaign> allcampaigns = await MDBCampagin.GetAllAsync();
+            foreach (Campaign campaign in allcampaigns)
+            {
+                if (campaign.DM.FirstOrDefault(u => u == AccountId) != null) campaigns.Add(campaign);
+                else if (campaign.Player.FirstOrDefault(u => u == AccountId) != null) campaigns.Add(campaign);
+            }
+        }
+    }
+
+    public void deleteCampagin(Campaign campaign)
+    {
+        if (campaign.DM.FirstOrDefault(u => u == AccountId) != null) campaign.DM.Remove(AccountId);
+        else campaign.Player.Remove(AccountId);
+        campaigns.Remove(campaign);
+    }
+    public void createCampagin()
+    {
+        NavMan.NavigateTo($"/createcampagin/{AccountId}");
+    }
+    public void viewCampagin(Campaign campaign)
+    {
+        NavMan.NavigateTo($"/campaignview/{campaign.Id}");
+    }
+}
