@@ -1,0 +1,46 @@
+﻿@page "/campaignview/{CampaignId}"
+@using D_DNoteTaker.Components.Models
+
+@inject IMongoRepository<Campaign> MDBCampaign
+
+<PageTitle>View Campaign</PageTitle>
+
+@if (campaign is null)
+{
+    <p>Loading campaign...</p>
+}
+else
+{
+    <h1>@campaign.Name</h1>
+
+    <hr />
+
+    <div class="tab-bar">
+        <NavLink class="tab-button" href="@($"/campaignview/{CampaignId}/worldbuilding")">
+            <h3>Worldbuilding</h3>
+        </NavLink>
+
+        <NavLink class="tab-button" href="@($"/campaignview/{CampaignId}/npcs")">
+            <h3>NPCs</h3>
+        </NavLink>
+
+        <NavLink class="tab-button" href="@($"/campaignview/{CampaignId}/sessions")">
+            <h3>Sessions</h3>
+        </NavLink>
+    </div>
+
+    <div class="mt-3">
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string CampaignId { get; set; } = string.Empty;
+
+    private Campaign? campaign;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        campaign = await MDBCampaign.GetByIdAsync(CampaignId);
+    }
+}
