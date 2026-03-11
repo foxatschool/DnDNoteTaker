@@ -37,10 +37,10 @@
 
 <EditForm OnValidSubmit="() => addTextBox()" Model="textBox">
     <label id="title">Title: </label>
-    <InputText id="title" @bind-Value="textBox.name" />
+    <InputText id="title" @bind-Value="textBox.Name" />
 
     <label id="body"></label>
-    <InputTextArea id="body" @bind-Value="textBox.text" />
+    <InputTextArea id="body" @bind-Value="textBox.Text" />
 
     <button type="submit" class="btn btn-primary">Add Description</button>
 </EditForm>

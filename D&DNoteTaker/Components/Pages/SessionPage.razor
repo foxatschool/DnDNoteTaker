@@ -1,0 +1,62 @@
+﻿@page "/session/{SessionId}"
+
+@rendermode InteractiveServer
+
+@inject NavigationManager nav;
+@inject IMongoRepository<Sessions> SessionDB;
+
+@if (session == null)
+{
+	<p>Loading...</p>
+}
+else
+{
+	<h3>@session.SessionNum</h3>
+	<h4>Summary</h4>
+	<p>@session.Summary.Text</p>
+	<h4>Date</h4>
+	<p>@session.DateOfSession.ToString()</p>
+	@if(session.Locations != null)
+	{
+		<h4>Locations Visited</h4>
+		@foreach (Location location in session.Locations)
+		{
+			<button @onclick="() => ToLocation(location.Id)">@location.Name</button>
+			<div></div>
+		}
+	}
+
+	@if (session.NPCs != null)
+	{
+		<h4>NPCs encountered</h4>
+		@foreach (NPCs npc in session.NPCs)
+		{
+			<button @onclick="() => ToNPC(npc.Id)">@npc.Name</button>
+			<div></div>
+		}
+	}
+
+
+}
+
+@code {
+	[Parameter]
+	public string SessionId { get; set; } = "";
+
+	private Sessions session;
+
+	protected override async Task OnInitializedAsync()
+	{
+		session = await SessionDB.GetByIdAsync(SessionId);
+	}
+
+	public void ToLocation(string id)
+	{
+		nav.NavigateTo($"/location/{id}", true, true);
+	}
+
+	public void ToNPC(string id)
+	{
+		nav.NavigateTo($"/npc/{id}", true, true);
+	}
+}
