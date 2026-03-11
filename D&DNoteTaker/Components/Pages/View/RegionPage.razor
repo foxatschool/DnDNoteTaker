@@ -1,0 +1,41 @@
+﻿@page "/region/{regionId}"
+@rendermode InteractiveServer
+
+@inject NavigationManager nav;
+
+@inject IMongoRepository<Region> RegionDB;
+
+@if(region == null)
+{
+	<p>Loading...</p>
+}
+else{
+	<h3>@region.Name</h3>
+	<h4>Locations</h4>
+	@foreach(Location location in region.Locations){
+		<button @onclick="() => ToLocation(location.Id)">@location.Name</button>
+		<div></div>
+	}
+	if(region.Description != null){
+		<h4>Description</h4>
+		<p>@region.Description.Text</p>
+	}
+	
+}
+@code {
+	[Parameter]
+	public string RegionId { 
+		get; set; } = "";
+
+	private Region region;
+
+	protected override async Task OnInitializedAsync()
+	{
+		region = await RegionDB.GetByIdAsync(RegionId);
+	}
+
+	public void ToLocation(string id)
+	{
+		nav.NavigateTo($"/location/{id}", true, true);
+	}
+}
