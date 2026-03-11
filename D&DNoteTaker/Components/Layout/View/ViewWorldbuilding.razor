@@ -30,7 +30,7 @@ else
         <h2>@worldbuilding.Name</h2>
 
         <h3>History</h3>
-        <p>@(worldbuilding.History?.text ?? "No history available.")</p>
+        <p>@(worldbuilding.History?.Text ?? "No history available.")</p>
 
         <h3>Regions</h3>
         @if (worldbuilding.Regions is not null && worldbuilding.Regions.Any())
