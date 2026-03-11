@@ -1,0 +1,31 @@
+﻿@page "/region/{regionId}"
+@inject IMongoRepository<Region> RegionDB;
+
+@if(region == null)
+{
+	<p>Loading...</p>
+}
+else{
+	<h3>@region.Name</h3>
+	<h4>Locations</h4>
+	@foreach(Location location in region.Locations){
+		<p>@location.Name</p>
+	}
+	if(region.Description != null){
+		<h4>Description</h4>
+		<p>@region.Description.text</p>
+	}
+	
+}
+@code {
+	[Parameter]
+	public string RegionId { 
+		get; set; } = "";
+
+	private Region region;
+
+	protected override async Task OnInitializedAsync()
+	{
+		region = await RegionDB.GetByIdAsync(RegionId);
+	}
+}
