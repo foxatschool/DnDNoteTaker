@@ -1,10 +1,10 @@
 ﻿<EditForm FormName="NewEdit" OnValidSubmit="() => submit()" Model="textBox">
     <label for="Title">@mainTitle</label>
-    <InputText id="Title" @bind-Value="textBox.name"/>
+    <InputText id="Title" @bind-Value="textBox.Name"/>
     <br/>
 
     <label for="text">@textTitle</label>
-    <InputTextArea  id="text" @bind-Value="textBox.text"/>
+    <InputTextArea  id="text" @bind-Value="textBox.Text"/>
 
     <button class="btn btn-primary" @onclick="() => submit()">Create Textbox</button>
 </EditForm>
