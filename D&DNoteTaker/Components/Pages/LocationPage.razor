@@ -1,0 +1,42 @@
+﻿@page "/location/{locationId}"
+@inject IMongoRepository<Location> LocationDB;
+
+@if (location == null)
+{
+	<p>Loading...</p>
+}
+else
+{
+	<h3>@location.Name</h3>
+	<h4>Climate</h4>
+	<p>@location.Climate</p>
+	<h4>Environment</h4>
+	<p>@location.Environment</p>
+	<h4>POIs</h4>
+	@foreach(string poi in location.POIs)
+	{
+		<p>@poi</p>
+	}
+	@if(location.Population != null)
+	{
+		<h4>Population</h4>
+		<p>@location.Population.ToString()</p>
+	}
+
+
+	<h4>Description</h4>
+	<p>@location.Description.Text</p>
+
+}
+
+@code {
+	[Parameter]
+	public string LocationId { get; set; } = "";
+
+	private Location location;
+
+	protected override async Task OnInitializedAsync()
+	{
+		location = await LocationDB.GetByIdAsync(LocationId);
+	}
+}

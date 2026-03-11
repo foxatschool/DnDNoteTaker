@@ -1,4 +1,8 @@
 ﻿@page "/region/{regionId}"
+@rendermode InteractiveServer
+
+@inject NavigationManager nav;
+
 @inject IMongoRepository<Region> RegionDB;
 
 @if(region == null)
@@ -9,7 +13,8 @@ else{
 	<h3>@region.Name</h3>
 	<h4>Locations</h4>
 	@foreach(Location location in region.Locations){
-		<p>@location.Name</p>
+		<button @onclick="() => ToLocation(location.Id)">@location.Name</button>
+		<div></div>
 	}
 	if(region.Description != null){
 		<h4>Description</h4>
@@ -27,5 +32,10 @@ else{
 	protected override async Task OnInitializedAsync()
 	{
 		region = await RegionDB.GetByIdAsync(RegionId);
+	}
+
+	public void ToLocation(string id)
+	{
+		nav.NavigateTo($"/location/{id}", true, true);
 	}
 }
