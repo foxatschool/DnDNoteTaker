@@ -5,14 +5,14 @@ namespace D_DNoteTaker.Components.Models
 {
     public class TextBox : Document
     {
-        public string? name { get; set; }
+        public string? Name { get; set; }
         [Required]
-        public string text { get; set; }
+        public string Text { get; set; }
 
         public TextBox(string? name = null)
         {
-            this.name = name;
-            text = "";
+            this.Name = name;
+            Text = "";
         }
     }
 }
