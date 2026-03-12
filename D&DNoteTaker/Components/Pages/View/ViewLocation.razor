@@ -1,8 +1,10 @@
-﻿@using Microsoft.AspNetCore.Authorization
-@attribute [Authorize]
-
-@page "/location/{locationId}"
+﻿@page "/location/{locationId}"
+@using D_DNoteTaker.Components.Layout.Create
 @inject IMongoRepository<Location> LocationDB;
+
+@rendermode InteractiveServer
+
+@inject NavigationManager nav;
 
 @if (location == null)
 {
@@ -32,7 +34,7 @@ else
 
 }
 
-@code {
+@code {		
 	[Parameter]
 	public string LocationId { get; set; } = "";
 
@@ -41,5 +43,5 @@ else
 	protected override async Task OnInitializedAsync()
 	{
 		location = await LocationDB.GetByIdAsync(LocationId);
-	}
+	}	
 }

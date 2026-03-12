@@ -39,7 +39,7 @@ else
     [Parameter]
     public string CampaignId { get; set; } = string.Empty;
 
-    private Campaign campaign;
+    private Campaign? campaign;
     
     protected override async Task OnInitializedAsync()
     {
