@@ -105,7 +105,7 @@
             }
             if(worldbuilding != null)
             {
-                worldbuilding.
+                worldbuilding.worldBuildEvent += addWorldBuilding;
             }
         }
     }
@@ -126,9 +126,9 @@
     {
         currentCampagin.Boxes.Add(textBox);
     }
-    void addRegion(object? sender, Worldbuilding worldbuilding)
+    void addWorldBuilding(object? sender, Worldbuilding worldbuilding)
     {
-        currentCampagin.WorldbuildingId = worldbuilding.Id.ToString();
+        //currentCampagin.World = worldbuilding.Id.ToString();
     }
     void NotFound(List<string> notFound)
     { }
