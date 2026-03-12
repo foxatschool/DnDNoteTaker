@@ -20,15 +20,18 @@
 
 @code
 {
+    public event EventHandler<Worldbuilding>? worldBuildEvent;
 
     Worldbuilding currentWorldbuilding = new Worldbuilding();
+
     CreateTextBox textEditor;
     CreateRegion editRegion;
 
 
     async Task submit()
     {
-        await MDBWorldBuilding.InsertOneAsync(currentWorldbuilding);
+        worldBuildEvent.Invoke(this, currentWorldbuilding);
+        //await MDBWorldBuilding.InsertOneAsync(currentWorldbuilding);
     }
     private void addTextBox(object? sender, TextBox textBox)
     {

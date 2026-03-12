@@ -18,16 +18,16 @@
 
 <EditForm OnValidSubmit="() => submit()" Model="@currentCampagin">
     <label id="name">Title: </label>
-    <InputText id="name" @bind-Value="currentCampagin.Name"/>
+    <InputText id="name" @bind-Value="currentCampagin.Name" />
 
-    <button type="submit" class="btn btn-primary" style="background-color:black" @onclick="() => submit()">Create Campagin</button>
+    <button type="submit" class="btn btn-primary" style="background-color:black">Create Campagin</button>
     <hr />
 
 </EditForm>
 
-<EditForm FormName="AddDM" OnValidSubmit="() => addDM(AddPerson)" Model="AddPerson">
+<EditForm FormName="AddDM" OnValidSubmit="() => addDM(AddDM)" Model="AddDM">
     <label id="dmName">Deungeon Master Username:</label>
-    <InputText id="dmName" @bind-Value="AddPerson" />
+    <InputText id="dmName" @bind-Value="AddDM" />
 
     <button type="submit" class="btn btn-primary" style="background-color:black">Add DM</button>
 </EditForm>
@@ -39,21 +39,25 @@
     <button type="submit" class="btn btn-primary" style="background-color:black">Add Player</button>
 </EditForm>
 
-@if(nameNotFound == null)
+@if (nameNotFound == null)
 {
     <p style="color:red">Could Not Find: @nameNotFound</p>
 }
 <hr />
-<CreateTextBox textTitle="Notes"/>
+<CreateTextBox @ref="textEditor" textTitle="Notes" />
+<hr />
+<CreateWorldBuilding @ref="worldbuilding" />
 <hr />
 
-@code 
+@code
 {
 
     Campaign currentCampagin = new Campaign();
     TextBox textBox = new TextBox();
     CreateTextBox textEditor;
+    CreateWorldBuilding worldbuilding;
     string AddPerson = "";
+    string AddDM = "";
     string nameNotFound = "";
     User? user;
 
@@ -69,12 +73,12 @@
     {
         await addDM(user.UserName);
         Campaign newCampaign = new Campaign()
-            {
-                Boxes = currentCampagin.Boxes,
-                DM = currentCampagin.DM,
-                Player = currentCampagin.Player,
-                Name = currentCampagin.Name
-            };
+        {
+            Boxes = currentCampagin.Boxes,
+            DM = currentCampagin.DM,
+            Player = currentCampagin.Player,
+            Name = currentCampagin.Name
+        };
         user.Campaigns.Add(newCampaign.Id.ToString());
         await MDBCampagin.InsertOneAsync(newCampaign);
         //string campaginID = MDBCampagin.GetByIdAsync(newCampagin.Id).Id.ToString();
@@ -94,11 +98,19 @@
 
     protected override void OnAfterRender(bool firstRender)
     {
-        if (firstRender && textEditor != null)
+        if (firstRender )
         {
-            textEditor.EventBox += addTextBox;
+            if (textEditor != null)
+            {
+                textEditor.EventBox += addTextBox;
+            }
+            if(worldbuilding != null)
+            {
+                worldbuilding.
+            }
         }
     }
+
 
     async Task addDM(string s)
     {
@@ -115,6 +127,10 @@
     {
         currentCampagin.Boxes.Add(textBox);
     }
+    void addRegion(object? sender, Worldbuilding worldbuilding)
+    {
+        currentCampagin.WorldbuildingId = worldbuilding.Id.ToString();
+    }
     void NotFound(List<string> notFound)
-    {}
+    { }
 }
