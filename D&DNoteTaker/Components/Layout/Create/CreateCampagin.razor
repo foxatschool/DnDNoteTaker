@@ -97,9 +97,16 @@
 
     protected override void OnAfterRender(bool firstRender)
     {
-        if (firstRender && textEditor != null)
+        if (firstRender )
         {
-            textEditor.EventBox += addTextBox;
+            if (textEditor != null)
+            {
+                textEditor.EventBox += addTextBox;
+            }
+            if(worldbuilding != null)
+            {
+                worldbuilding.worldBuildEvent += addWorldBuilding;
+            }
         }
     }
 
@@ -117,6 +124,10 @@
     void addTextBox(object? sender, TextBox textBox)
     {
         currentCampagin.Boxes.Add(textBox);
+    }
+    void addWorldBuilding(object? sender, Worldbuilding worldbuilding)
+    {
+        currentCampagin.WorldbuildingId = worldbuilding.Id.ToString();
     }
     void NotFound(List<string> notFound)
     {}
