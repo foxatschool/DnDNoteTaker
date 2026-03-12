@@ -1,35 +1,43 @@
-﻿@page "/createcampagin/{UserId}"
+﻿@page "/createcampagin"
 @using D_DNoteTaker.Components.Models
+@using Microsoft.AspNetCore.Identity
 @inject IMongoRepository<Campaign> MDBCampagin
-@* @inject IMongoRepository<User> MDBUser *@
+@inject UserManager<User> MDBUser
 @attribute [StreamRendering]
 @rendermode InteractiveServer
+@inject NavigationManager NavMan
+
+@using Microsoft.AspNetCore.Components.Authorization
+@using MongoDB.Bson
+@inject AuthenticationStateProvider AuthStateProvider
 
 
 <h3>Create Campagin</h3>
 
 <PageTitle>Create Capagin</PageTitle>
 
-@* <EditForm OnValidSubmit="() => submit()" Model="@currentCampagin">
+<EditForm OnValidSubmit="() => submit()" Model="@currentCampagin">
     <label id="name">Title: </label>
     <InputText id="name" @bind-Value="currentCampagin.Name"/>
+
+    <button type="submit" class="btn btn-primary" style="background-color:black" @onclick="() => submit()">Create Campagin</button>
     <hr />
 
-</EditForm> *@
+</EditForm>
 
-@* <EditForm FormName="AddDM" OnValidSubmit="() => addPlayer(AddPerson)" Model="AddPerson">
+<EditForm FormName="AddDM" OnValidSubmit="() => addDM(AddPerson)" Model="AddPerson">
     <label id="dmName">Deungeon Master Username:</label>
     <InputText id="dmName" @bind-Value="AddPerson" />
 
-    <button type="submit" class="btn btn-primary">Add DM</button>
+    <button type="submit" class="btn btn-primary" style="background-color:black">Add DM</button>
 </EditForm>
 
 <EditForm FormName="AddPlayer" OnValidSubmit="() => addPlayer(AddPerson)" Model="AddPerson">
     <label id="playerName">Player Username:</label>
     <InputText id="playerName" @bind-Value="AddPerson" />
 
-    <button type="submit" class="btn btn-primary">Add Player</button>
-</EditForm> *@
+    <button type="submit" class="btn btn-primary" style="background-color:black">Add Player</button>
+</EditForm>
 
 @if(nameNotFound == null)
 {
@@ -41,29 +49,48 @@
 
 @code 
 {
-    [Parameter]
-    public string UserId { get; set; }
 
     Campaign currentCampagin = new Campaign();
     TextBox textBox = new TextBox();
     CreateTextBox textEditor;
     string AddPerson = "";
     string nameNotFound = "";
+    User? user;
 
-    // async Task submit()
-    // {
-    //     await addDM(UserId);
-    //     await MDBCampagin.InsertOneAsync(currentCampagin);
-    // }
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var claimsUser = authState.User;
 
-    // async Task addPlayer(string s)
-    // {
-    //     User user = await MDBUser.GetByIdAsync(s);
-    //     if (currentCampagin.Player.FirstOrDefault(u => u == s) != null && user != null)
-    //     {
-    //         currentCampagin.DM.Add(s);
-    //     }
-    // }
+        user = await MDBUser.GetUserAsync(claimsUser);
+    }
+
+    async Task submit()
+    {
+        await addDM(user.UserName);
+        Campaign newCampagin = new Campaign()
+            {
+                Boxes = currentCampagin.Boxes,
+                DM = currentCampagin.DM,
+                Player = currentCampagin.Player,
+                Name = currentCampagin.Name
+            };
+        user.Campaigns.Add(newCampagin.Id);
+        await MDBCampagin.InsertOneAsync(newCampagin);
+        //string campaginID = MDBCampagin.GetByIdAsync(newCampagin.Id).Id.ToString();
+        NavMan.NavigateTo($"/viewCampagin/{newCampagin.Id.ToString()}");
+    }
+
+    async Task addPlayer(string s)
+    {
+
+        List<User> users = MDBUser.Users.ToList();
+        User? friend = users.FirstOrDefault(u => u.UserName == s);
+        if (friend != null)
+        {
+            currentCampagin.DM.Add(friend.Id.ToString());
+        }
+    }
 
     protected override void OnAfterRender(bool firstRender)
     {
@@ -73,14 +100,16 @@
         }
     }
 
-    // async Task addDM(string s)
-    // {
-    //     User user = await MDBUser.GetByIdAsync(s);
-    //     if (currentCampagin.DM.FirstOrDefault(u => u == s) != null && user != null)
-    //     {
-    //         currentCampagin.DM.Add(s);
-    //     }
-    // }
+    async Task addDM(string s)
+    {
+
+        List<User> users = MDBUser.Users.ToList();
+        User? friend = users.FirstOrDefault(u => u.UserName == s);
+        if (friend != null)
+        {
+            currentCampagin.DM.Add(friend.Id.ToString());
+        }
+    }
 
     void addTextBox(object? sender, TextBox textBox)
     {
