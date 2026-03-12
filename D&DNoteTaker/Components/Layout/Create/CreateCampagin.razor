@@ -75,10 +75,13 @@
                 Player = currentCampagin.Player,
                 Name = currentCampagin.Name
             };
-        user.Campaigns.Add(newCampagin.Id);
-        await MDBCampagin.InsertOneAsync(newCampagin);
+
+        user.Campaigns = user.Campaigns.Append(newCampagin.Id).ToList();
+        // await MDBCampagin.InsertOneAsync(newCampagin);
         //string campaginID = MDBCampagin.GetByIdAsync(newCampagin.Id).Id.ToString();
+        var result = await MDBUser.UpdateAsync(user);
         NavMan.NavigateTo($"/viewCampagin/{newCampagin.Id.ToString()}");
+        // NavMan.NavigateTo($"/home");
     }
 
     async Task addPlayer(string s)
