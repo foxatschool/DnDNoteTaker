@@ -14,7 +14,7 @@
 
 <h3>Create Campagin</h3>
 
-<PageTitle>Create Capagin</PageTitle>
+<PageTitle>Create Campaign</PageTitle>
 
 <EditForm OnValidSubmit="() => submit()" Model="@currentCampagin">
     <label id="name">Title: </label>
@@ -68,17 +68,17 @@
     async Task submit()
     {
         await addDM(user.UserName);
-        Campaign newCampagin = new Campaign()
+        Campaign newCampaign = new Campaign()
             {
                 Boxes = currentCampagin.Boxes,
                 DM = currentCampagin.DM,
                 Player = currentCampagin.Player,
                 Name = currentCampagin.Name
             };
-        user.Campaigns.Add(newCampagin.Id);
-        await MDBCampagin.InsertOneAsync(newCampagin);
+        user.Campaigns.Add(newCampaign.Id.ToString());
+        await MDBCampagin.InsertOneAsync(newCampaign);
         //string campaginID = MDBCampagin.GetByIdAsync(newCampagin.Id).Id.ToString();
-        NavMan.NavigateTo($"/viewCampagin/{newCampagin.Id.ToString()}");
+        NavMan.NavigateTo($"/campagin/{newCampaign.Id}");
     }
 
     async Task addPlayer(string s)
