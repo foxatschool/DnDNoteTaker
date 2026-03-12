@@ -1,7 +1,7 @@
 ﻿@page "/createcampagin/{UserId}"
 @using D_DNoteTaker.Components.Models
 @inject IMongoRepository<Campaign> MDBCampagin
-@inject IMongoRepository<User> MDBUser
+@* @inject IMongoRepository<User> MDBUser *@
 @attribute [StreamRendering]
 @rendermode InteractiveServer
 
@@ -10,14 +10,14 @@
 
 <PageTitle>Create Capagin</PageTitle>
 
-<EditForm OnValidSubmit="() => submit()" Model="@currentCampagin">
+@* <EditForm OnValidSubmit="() => submit()" Model="@currentCampagin">
     <label id="name">Title: </label>
     <InputText id="name" @bind-Value="currentCampagin.Name"/>
     <hr />
 
-</EditForm>
+</EditForm> *@
 
-<EditForm FormName="AddDM" OnValidSubmit="() => addPlayer(AddPerson)" Model="AddPerson">
+@* <EditForm FormName="AddDM" OnValidSubmit="() => addPlayer(AddPerson)" Model="AddPerson">
     <label id="dmName">Deungeon Master Username:</label>
     <InputText id="dmName" @bind-Value="AddPerson" />
 
@@ -29,7 +29,7 @@
     <InputText id="playerName" @bind-Value="AddPerson" />
 
     <button type="submit" class="btn btn-primary">Add Player</button>
-</EditForm>
+</EditForm> *@
 
 @if(nameNotFound == null)
 {
@@ -50,20 +50,20 @@
     string AddPerson = "";
     string nameNotFound = "";
 
-    async Task submit()
-    {
-        await addDM(UserId);
-        await MDBCampagin.InsertOneAsync(currentCampagin);
-    }
+    // async Task submit()
+    // {
+    //     await addDM(UserId);
+    //     await MDBCampagin.InsertOneAsync(currentCampagin);
+    // }
 
-    async Task addPlayer(string s)
-    {
-        User user = await MDBUser.GetByIdAsync(s);
-        if (currentCampagin.Player.FirstOrDefault(u => u == s) != null && user != null)
-        {
-            currentCampagin.DM.Add(s);
-        }
-    }
+    // async Task addPlayer(string s)
+    // {
+    //     User user = await MDBUser.GetByIdAsync(s);
+    //     if (currentCampagin.Player.FirstOrDefault(u => u == s) != null && user != null)
+    //     {
+    //         currentCampagin.DM.Add(s);
+    //     }
+    // }
 
     protected override void OnAfterRender(bool firstRender)
     {
@@ -73,14 +73,14 @@
         }
     }
 
-    async Task addDM(string s)
-    {
-        User user = await MDBUser.GetByIdAsync(s);
-        if (currentCampagin.DM.FirstOrDefault(u => u == s) != null && user != null)
-        {
-            currentCampagin.DM.Add(s);
-        }
-    }
+    // async Task addDM(string s)
+    // {
+    //     User user = await MDBUser.GetByIdAsync(s);
+    //     if (currentCampagin.DM.FirstOrDefault(u => u == s) != null && user != null)
+    //     {
+    //         currentCampagin.DM.Add(s);
+    //     }
+    // }
 
     void addTextBox(object? sender, TextBox textBox)
     {
