@@ -1,5 +1,6 @@
-﻿@page "/campaignview/{CampaignId}/worldbuilding"
+﻿@page "/worldbuilding/{WorldbuildingId}"
 @using D_DNoteTaker.Components.Models
+@inject IMongoRepository<Worldbuilding> WorldbuildDB;
 
 <PageTitle>Campaign Worldbuilding</PageTitle>
 
@@ -11,7 +12,7 @@
         @foreach (var region in worldbuilding.Regions)
         {
             <NavLink class="tab-link"
-                     href="@($"/campaignview/{CampaignId}/worldbuilding/{region.Id}")">
+                     href="@($"/campaignview/{WorldbuildingId}/worldbuilding/{region.Id}")">
                 @region.Name
 
                 <br />
@@ -51,25 +52,12 @@ else
 
 @code {
     [Parameter]
-    public string CampaignId { get; set; } = string.Empty;
+    public string WorldbuildingId { get; set; }
 
-    private Worldbuilding? worldbuilding;
+    private Worldbuilding worldbuilding;
 
-    protected override void OnInitialized()
+    protected override async void OnInitialized()
     {
-        worldbuilding = new Worldbuilding
-        {
-            Name = "The Known World",
-            History = new TextBox
-            {
-                Text = "An ancient land shaped by fallen kingdoms and old wars."
-            },
-            Regions = new List<Region>
-            {
-                new Region { Name = "Northreach" },
-                new Region { Name = "Ashen Vale" },
-                new Region { Name = "Sun Coast" }
-            }
-        };
+        worldbuilding = await WorldbuildDB.GetByIdAsync(WorldbuildingId);
     }
 }
