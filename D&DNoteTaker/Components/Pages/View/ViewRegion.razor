@@ -1,4 +1,8 @@
-﻿@page "/region/{regionId}"
+﻿@using Microsoft.AspNetCore.Authorization
+@using D_DNoteTaker.Components.Layout.Create
+@attribute [Authorize]
+
+@page "/region/{regionId}"
 @rendermode InteractiveServer
 
 @inject NavigationManager nav;
@@ -20,6 +24,8 @@ else{
 		<h4>Description</h4>
 		<p>@region.Description.Text</p>
 	}
+
+	<CreateLocation></CreateLocation>
 	
 }
 @code {
