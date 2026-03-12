@@ -1,16 +1,21 @@
-﻿@page "/{AccountId?}"
+﻿@page "/home"
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
 @attribute [StreamRendering]
 @rendermode InteractiveServer
 @inject NavigationManager NavMan
-@* @inject IUserService MDBUser *@
+@inject UserManager<User> MDBUser
 @inject IMongoRepository<Campaign> MDBCampagin
+
+@using Microsoft.AspNetCore.Components.Authorization
+@inject AuthenticationStateProvider AuthStateProvider
 
 <PageTitle>Home</PageTitle>
 
 <h1>Your Campagins</h1>
 <br />
 
-@if (AccountId == null)
+@if (user == null)
 {
     <h3>Please Sign in to view Campagins</h3>
 }
@@ -41,49 +46,47 @@ else
 
     </table>
 }
-@if (AccountId != null)
+@if (user != null)
 {
     <button class="btn btn-primary" style="float:right; background-color:black; margin:40px" @onclick="() => createCampagin()">Create Campagin</button>
 }
-<h4>Meow</h4>
 
 
 @code
 {
-    [Parameter]
-    public string? AccountId { get; set; } = null;
+    //[Parameter]
+    //public string? AccountId { get; set; } = null;
     User? user;
-    public List<string> campaigns = new List<Campaign>();
+    public List<Campaign> campaigns = new List<Campaign>();
 
 
     protected override async Task OnInitializedAsync()
     {
-        user = await MDBUser.GetUserById(AccountId);
+        // AccountId = MDBUser.GetUserId();
+        var authState = await AuthStateProvider.GetAuthenticationStateAsync();
+        var claimsUser = authState.User;
+
+        user = await MDBUser.GetUserAsync(claimsUser);
         if(user != null)
         {
-            campaigns = user.Campaigns;
-        }
-
-        if (AccountId != null)
-        {
-            List<Campaign> allcampaigns = await MDBCampagin.GetAllAsync();
-            foreach (Campaign campaign in allcampaigns)
+            foreach(string campaignId in user.Campaigns)
             {
-                if (campaign.DM.FirstOrDefault(u => u == AccountId) != null) campaigns.Add(campaign);
-                else if (campaign.Player.FirstOrDefault(u => u == AccountId) != null) campaigns.Add(campaign);
+                Campaign campaign = await MDBCampagin.GetByIdAsync(campaignId);
+                campaigns.Add(campaign);
             }
         }
+
+        
     }
 
     public void deleteCampagin(Campaign campaign)
     {
-        if (campaign.DM.FirstOrDefault(u => u == AccountId) != null) campaign.DM.Remove(AccountId);
-        else campaign.Player.Remove(AccountId);
-        campaigns.Remove(campaign);
+        user.Campaigns.Remove(campaign.Id);
+        //campaigns.Remove(campaign);
     }
     public void createCampagin()
     {
-        NavMan.NavigateTo($"/createcampagin/{AccountId}");
+        NavMan.NavigateTo($"/createcampagin/{user.Id}");
     }
     public void viewCampagin(Campaign campaign)
     {
