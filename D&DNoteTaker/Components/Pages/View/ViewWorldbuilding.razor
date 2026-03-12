@@ -1,4 +1,7 @@
-﻿@page "/worldbuilding/{WorldbuildingId}"
+﻿@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+@page "/worldbuilding/{WorldbuildingId}"
 @using D_DNoteTaker.Components.Models
 @inject IMongoRepository<Worldbuilding> WorldbuildDB;
 

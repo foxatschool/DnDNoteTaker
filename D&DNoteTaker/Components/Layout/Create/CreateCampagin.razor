@@ -1,7 +1,8 @@
 ﻿@page "/createcampagin/{UserId}"
 @using D_DNoteTaker.Components.Models
 @inject IMongoRepository<Campaign> MDBCampagin
-@inject IMongoRepository<User> MDBUser
+
+@inject IUserService MDBUser
 @attribute [StreamRendering]
 @rendermode InteractiveServer
 
@@ -58,7 +59,7 @@
 
     async Task addPlayer(string s)
     {
-        User user = await MDBUser.GetByIdAsync(s);
+        User user = await MDBUser.GetUserById(s);
         if (currentCampagin.Player.FirstOrDefault(u => u == s) != null && user != null)
         {
             currentCampagin.DM.Add(s);
@@ -75,7 +76,7 @@
 
     async Task addDM(string s)
     {
-        User user = await MDBUser.GetByIdAsync(s);
+        User user = await MDBUser.GetUserById(s);
         if (currentCampagin.DM.FirstOrDefault(u => u == s) != null && user != null)
         {
             currentCampagin.DM.Add(s);

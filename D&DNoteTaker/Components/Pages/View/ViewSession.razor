@@ -1,4 +1,7 @@
-﻿@page "/session/{SessionId}"
+﻿@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+@page "/session/{SessionId}"
 
 @rendermode InteractiveServer
 
