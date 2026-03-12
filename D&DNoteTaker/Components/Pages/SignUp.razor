@@ -1,58 +1,70 @@
 ﻿@page "/signup"
-@attribute [StreamRendering]
-@inject IMongoRepository<User> User
+@using System.ComponentModel.DataAnnotations
+@using D_DNoteTaker.Components.Models.Login
+@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<User> UserManager
+@inject SignInManager<User> SignInManager
 @inject NavigationManager NavManager
+
+@attribute [StreamRendering]
 @rendermode InteractiveServer
 
-<EditForm FormName="SignUp" OnValidSubmit="addNewUserAccount" Model="newUser">
-    <DataAnnotationsValidator/>
+<h3>SignUp</h3>
+
+@if (!string.IsNullOrWhiteSpace(errorMessage))
+{
+    <p>@errorMessage</p>
+}
+
+<EditForm FormName="signup" OnValidSubmit="AddNewUser" Model="Input">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
 
     <div>
-        <label for="userName">Username: </label>
-        <InputText id="userName" DisplayName="Username" @bind-Value="newUser.UserName" />
-        <ValidationMessage For="() => newUser.UserName" />
+        <label for="username">Username: </label>
+        <InputText id="username" @bind-Value="Input.Username" />
     </div>
 
     <div>
         <label for="password">Password: </label>
-        <InputText id="password" DisplayName="Password" @bind-Value="newUser.Password" />
-        <ValidationMessage For="() => newUser.Password" />
+        <InputText id="password" type="password" @bind-Value="Input.Password" />
     </div>
 
     <div>
-        <button type="submit">Create Account</button>
-        <button type="button" @onclick="goToLoginPage">Login</button>
+        <label for="password">Password: </label>
+        <InputText id="password" type="password" @bind-Value="Input.ConfirmPassword" />
+    </div>
+
+    <div>
+        <button type="submit">Register</button>
+        <button type="button" @onclick="GoToLogIn">Log-In</button>
     </div>
 </EditForm>
 
 @code {
-    User newUser = new User();
+    private SignupModel Input = new();
+    private string? errorMessage;
 
-    private async Task addNewUserAccount()
+    private async Task AddNewUser()
     {
-        newUser.Password = encryptUserInformation(newUser.Password);
-        await User.InsertOneAsync(newUser);
-        Console.Write("added new User");
-        newUser = new User();
-        goToLoginPage();
-    }
-
-    private void goToLoginPage() => NavManager.NavigateTo($"/login");
-
-    private string encryptUserInformation(string stringToEncrypt)
-    {
-        string encryptedString = "";
-        int shifter = 5;
-
-        for (int i = 0; i < stringToEncrypt.Length; i++)
+        var user = new User()
         {
-            int charASCIIValue = stringToEncrypt[i];
+            UserName = Input.Username,
+            Campaigns = Array.Empty<string>()
+        };
 
-            if (charASCIIValue + shifter > 126) charASCIIValue -= 94;
+        var result = await UserManager.CreateAsync(user, Input.Password);
 
-            encryptedString += (char)(charASCIIValue + shifter);
+        if (result.Succeeded)
+        {
+            GoToLogIn();
         }
-
-        return encryptedString;
+        else
+        {
+            errorMessage = result.Errors.FirstOrDefault()?.Description;
+        }
     }
+
+    private void GoToLogIn() => NavManager.NavigateTo("/");
 }

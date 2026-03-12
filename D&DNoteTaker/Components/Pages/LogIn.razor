@@ -1,86 +1,91 @@
-﻿@page "/login"
-@attribute [StreamRendering]
-@inject IMongoRepository<User> User
+﻿@page "/"
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using D_DNoteTaker.Components.Models.Login
+
+@inject SignInManager<User> SignInManager
 @inject NavigationManager NavManager
-@rendermode InteractiveServer
+@inject Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider AuthenticationProvider
 
-@if (users == null)
+<PageTitle>Log-In</PageTitle>
+
+<h3>LogIn</h3>
+
+@if (!string.IsNullOrWhiteSpace(errorMessage))
 {
-    <h3>Loading...</h3>
-} else
-{
-    @if (!userFound) {
-        <h2>No User Found</h2>
-        <h4>Make sure your username and password are both correct</h4>
-    }
-
-    <EditForm FormName="LogIn" OnValidSubmit="findUser" Model="loggedUser">
-        <DataAnnotationsValidator />
-
-        <div>
-            <label for="userName">Username: </label>
-            <InputText id="userName" DisplayName="Username" @bind-Value="loggedUser.UserName" />
-            <ValidationMessage For="() => loggedUser.UserName" />
-        </div>
-
-        <div>
-            <label for="password">Password: </label>
-            <InputText id="password" DisplayName="Password" @bind-Value="loggedUser.Password" />
-            <ValidationMessage For="() => loggedUser.Password" />
-        </div>
-
-        <div>
-            <button type="submit">Log-in</button>
-            <button type="button" @onclick="goToSignUpPage">Sign-up</button>
-        </div>
-    </EditForm>
+    <p>@errorMessage</p>
 }
 
+<EditForm FormName="login" OnValidSubmit="CanLogIn" Model="Input">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label for="username">Username: </label>
+        <InputText id="username" @bind-Value="Input!.Username" />
+    </div>
+
+    <div>
+        <label for="password">Password: </label>
+        <InputText id="password" type="password" @bind-Value="Input!.Password" />
+    </div>
+
+    <div>
+        <button type="submit">Log-In</button>
+    </div>
+
+    <div>
+        <a href="signup" class="btn btn-secondary">Sign-Up</a>
+    </div>
+</EditForm>
+
 @code {
-    User loggedUser = new User();
-    bool userFound = true;
-    User? foundUsr;
-    List<User> users;
+    [SupplyParameterFromForm(FormName = "login")]
+    private LoginModel? Input { get; set; }
+    private string? errorMessage;
 
-    private async Task findUser()
+    private async Task CanLogIn()
     {
-        userFound = true;
-        foundUsr = users.FirstOrDefault(usr => usr.UserName == loggedUser.UserName && usr.Password == loggedUser.Password);
+        var result = await SignInManager.PasswordSignInAsync(
+            Input!.Username,
+            Input.Password,
+            isPersistent: false,
+            lockoutOnFailure: false);
 
-        if (foundUsr == null) userFound = false;
-        else NavManager.NavigateTo("/");
-
-        loggedUser = new User();
+        if (result.Succeeded)
+        {
+            NavManager.NavigateTo("/home");
+        }
+        else if (result.IsNotAllowed)
+        {
+            errorMessage = "Sign-in is not allowed for this account.";
+        }
+        else if (result.IsLockedOut)
+        {
+            errorMessage = "This account is locked out.";
+        }
+        else if (result.RequiresTwoFactor)
+        {
+            errorMessage = "This account requires two-factor authentication.";
+        }
+        else
+        {
+            errorMessage = "Invalid user name or password.";
+        }
     }
 
+    // Code taken from ChatGPT
     protected override async Task OnInitializedAsync()
     {
-        await Task.Delay(1500);
+        Input ??= new LoginModel();
 
-        users = await User.GetAllAsync();
+        var authState = await AuthenticationProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
 
-        foreach (User usr in users)
+        if (user.Identity?.IsAuthenticated == true)
         {
-            usr.Password = decryptUserInformation(usr.Password);
+            NavManager.NavigateTo("/home");
         }
-    }
-
-    private void goToSignUpPage() => NavManager.NavigateTo($"/signup");
-    
-    private string decryptUserInformation(string stringToDecrypt)
-    {
-        string decryptedString = "";
-        int shifter = 5;
-
-        for (int i = 0; i < stringToDecrypt.Length; i++)
-        {
-            int charASCIIValue = stringToDecrypt[i];
-
-            if (charASCIIValue - shifter < 33) charASCIIValue += 94;
-
-            decryptedString += (char)(charASCIIValue - shifter);
-        }
-
-        return decryptedString;
     }
 }
