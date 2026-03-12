@@ -1,4 +1,8 @@
-﻿@page "/region/{regionId}"
+﻿@using Microsoft.AspNetCore.Authorization
+@using D_DNoteTaker.Components.Layout.Create
+@attribute [Authorize]
+
+@page "/region/{regionId}"
 @rendermode InteractiveServer
 
 @inject NavigationManager nav;
@@ -21,11 +25,7 @@ else{
 		<p>@region.Description.Text</p>
 	}
 
-	<button class="btn btn-primary"
-			style="float:right; background-color:black; margin:40px"
-			@onclick="() => ToRegionCreate()">
-		Edit Location
-	</button>
+	<CreateLocation></CreateLocation>
 	
 }
 @code {
