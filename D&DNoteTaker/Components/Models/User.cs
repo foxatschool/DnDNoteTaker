@@ -6,6 +6,6 @@ namespace D_DNoteTaker.Components.Models
     [BsonIgnoreExtraElements]
     public class User : MongoUser
     {
-        public string[]? Campaigns { get; set; }
+        public List<string>? Campaigns { get; set; }
     }
 }
