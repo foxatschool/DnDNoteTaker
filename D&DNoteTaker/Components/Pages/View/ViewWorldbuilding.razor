@@ -12,7 +12,7 @@
         @foreach (var region in worldbuilding.Regions)
         {
             <NavLink class="tab-link"
-                     href="@($"/campaignview/{WorldbuildingId}/worldbuilding/{region.Id}")">
+                     href="@($"/region/{region.Id}")">
                 @region.Name
 
                 <br />
@@ -21,7 +21,7 @@
     }
 </div>
 
-@if (worldbuilding is null)
+@if (worldbuilding == null)
 {
     <p>No worldbuilding found.</p>
 }
@@ -34,7 +34,7 @@ else
         <p>@(worldbuilding.History?.Text ?? "No history available.")</p>
 
         <h3>Regions</h3>
-        @if (worldbuilding.Regions is not null && worldbuilding.Regions.Any())
+        @if (worldbuilding.Regions != null && worldbuilding.Regions.Any())
         {
             <ul>
                 @foreach (var region in worldbuilding.Regions)
@@ -56,7 +56,7 @@ else
 
     private Worldbuilding worldbuilding;
 
-    protected override async void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         worldbuilding = await WorldbuildDB.GetByIdAsync(WorldbuildingId);
     }
