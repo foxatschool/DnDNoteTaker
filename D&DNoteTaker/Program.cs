@@ -6,6 +6,8 @@ using D_DNoteTaker.Data.Interfaces;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Driver;
+using AspNetCore.Identity.Mongo;
+//using AspNetCore.Identity.Mongo.Model;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,12 +64,21 @@ builder.Services.AddScoped<IMongoRepository<Worldbuilding>>((sp) => {
     return worldbuildingData;
 });
 
-builder.Services.AddScoped<IMongoRepository<User>>((sp) => {
-    var client = new MongoClient(Environment.GetEnvironmentVariable("MONGODB_URI"));
-    var database = client.GetDatabase("Campaign");
-    MongoRepository<User> userData = new MongoRepository<User>(database, "Users");
-    return userData;
-});
+builder.Services.AddIdentityMongoDbProvider<User>(
+    identity =>
+    {
+        identity.SignIn.RequireConfirmedAccount = false;
+        identity.SignIn.RequireConfirmedEmail = false;
+        identity.SignIn.RequireConfirmedPhoneNumber = false;
+        // other Identity options here
+    },
+    mongo =>
+    {
+        mongo.ConnectionString = Environment.GetEnvironmentVariable("MONGODB_URI_LOGIN");
+    });
+
+builder.Services.AddCascadingAuthenticationState();
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
@@ -82,6 +93,9 @@ app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages:
 app.UseHttpsRedirection();
 
 app.UseAntiforgery();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapStaticAssets();
 app.MapRazorComponents<App>()

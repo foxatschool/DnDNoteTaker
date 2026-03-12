@@ -16,7 +16,6 @@ namespace D_DNoteTaker.Data
         public async Task<List<TDocument>> GetAllAsync()
         {
             List<TDocument> test = await _collection.Find(Builders<TDocument>.Filter.Empty).ToListAsync();
-            Console.WriteLine("HELLO");
             return test;
         }
 
