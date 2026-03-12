@@ -1,8 +1,10 @@
-﻿@using Microsoft.AspNetCore.Authorization
-@attribute [Authorize]
-
-@page "/npc/{NPCId}"
+﻿@page "/npc/{NPCId}"
+@using D_DNoteTaker.Components.Layout.Create
 @inject IMongoRepository<NPCs> NPCDB;
+@inject NavigationManager nav;
+
+@rendermode InteractiveServer
+
 
 @if (npc == null)
 {
@@ -30,6 +32,7 @@ else
 	}
 	<h4>@aids</h4>
 
+	<CreateTextBox></CreateTextBox>
 }
 
 @code {
@@ -47,5 +50,10 @@ else
 		{
 			aids = (npc.HasAids) ? $"{npc.Name} has aids" : $"{npc.Name} does not have aids";
 		}
+	}
+
+	public void ToNPCCreate()
+	{
+		nav.NavigateTo($"/createnpc", true, true);
 	}
 }

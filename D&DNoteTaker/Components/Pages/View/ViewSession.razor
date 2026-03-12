@@ -1,7 +1,5 @@
-﻿@using Microsoft.AspNetCore.Authorization
-@attribute [Authorize]
-
-@page "/session/{SessionId}"
+﻿@page "/session/{SessionId}"
+@using D_DNoteTaker.Components.Layout.Create
 
 @rendermode InteractiveServer
 
@@ -39,7 +37,9 @@ else
 		}
 	}
 
+	<CreateNPC></CreateNPC>
 
+	<CreateLocation></CreateLocation>
 }
 
 @code {
@@ -61,5 +61,10 @@ else
 	public void ToNPC(string id)
 	{
 		nav.NavigateTo($"/npc/{id}", true, true);
+	}
+
+	public void ToCreateSession()
+	{
+		nav.NavigateTo($"/createsession", true, true);
 	}
 }

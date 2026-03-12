@@ -1,4 +1,5 @@
-﻿<h3>CreateRegion</h3>
+﻿
+<h3>CreateRegion</h3>
 
 <EditForm OnValidSubmit="() => submit()" Model="title">
     <label for="title">Region Title:</label>
@@ -33,12 +34,10 @@
             editLocation.EventLocation += addLocation;
         }
     }
-
     private void addTextBox(object? sender, TextBox textBox)
     {
         region.Description = textBox;
     }
-
     private void addLocation(object? sender, Location location)
     {
         region.Locations.Add(location);
