@@ -36,6 +36,11 @@ else
 		}
 	}
 
+	<button class="btn btn-primary"
+			style="float:right; background-color:black; margin:40px"
+			@onclick="() => ToCreateSession()">
+		Edit Location
+	</button>
 
 }
 
@@ -58,5 +63,10 @@ else
 	public void ToNPC(string id)
 	{
 		nav.NavigateTo($"/npc/{id}", true, true);
+	}
+
+	public void ToCreateSession()
+	{
+		nav.NavigateTo($"/createsession", true, true);
 	}
 }

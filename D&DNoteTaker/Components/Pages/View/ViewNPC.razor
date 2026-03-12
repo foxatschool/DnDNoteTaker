@@ -1,5 +1,9 @@
 ﻿@page "/npc/{NPCId}"
 @inject IMongoRepository<NPCs> NPCDB;
+@inject NavigationManager nav;
+
+@rendermode InteractiveServer
+
 
 @if (npc == null)
 {
@@ -27,6 +31,11 @@ else
 	}
 	<h4>@aids</h4>
 
+	<button class="btn btn-primary"
+			style="float:right; background-color:black; margin:40px"
+			@onclick="() => ToNPCCreate()">
+		Edit Location
+	</button>
 }
 
 @code {
@@ -44,5 +53,10 @@ else
 		{
 			aids = (npc.HasAids) ? $"{npc.Name} has aids" : $"{npc.Name} does not have aids";
 		}
+	}
+
+	public void ToNPCCreate()
+	{
+		nav.NavigateTo($"/createnpc", true, true);
 	}
 }

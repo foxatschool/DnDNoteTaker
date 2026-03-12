@@ -20,6 +20,12 @@ else{
 		<h4>Description</h4>
 		<p>@region.Description.Text</p>
 	}
+
+	<button class="btn btn-primary"
+			style="float:right; background-color:black; margin:40px"
+			@onclick="() => ToRegionCreate()">
+		Edit Location
+	</button>
 	
 }
 @code {
@@ -37,5 +43,10 @@ else{
 	public void ToLocation(string id)
 	{
 		nav.NavigateTo($"/location/{id}", true, true);
+	}
+
+	public void ToRegionCreate()
+	{
+		nav.NavigateTo($"/createregion", true, true);
 	}
 }
