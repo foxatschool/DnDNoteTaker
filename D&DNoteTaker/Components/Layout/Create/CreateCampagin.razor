@@ -1,5 +1,4 @@
-﻿@page "/createcampagin"
-@using D_DNoteTaker.Components.Models
+﻿@using D_DNoteTaker.Components.Models
 @using Microsoft.AspNetCore.Identity
 @inject IMongoRepository<Campaign> MDBCampagin
 @inject UserManager<User> MDBUser
@@ -14,7 +13,7 @@
 
 <h3>Create Campagin</h3>
 
-<PageTitle>Create Campaign</PageTitle>
+<PageTitle>Create Capagin</PageTitle>
 
 <EditForm OnValidSubmit="() => submit()" Model="@currentCampagin">
     <label id="name">Title: </label>
@@ -72,17 +71,17 @@
     async Task submit()
     {
         await addDM(user.UserName);
-        Campaign newCampaign = new Campaign()
-        {
-            Boxes = currentCampagin.Boxes,
-            DM = currentCampagin.DM,
-            Player = currentCampagin.Player,
-            Name = currentCampagin.Name
-        };
-        user.Campaigns.Add(newCampaign.Id.ToString());
-        await MDBCampagin.InsertOneAsync(newCampaign);
+        Campaign newCampagin = new Campaign()
+            {
+                Boxes = currentCampagin.Boxes,
+                DM = currentCampagin.DM,
+                Player = currentCampagin.Player,
+                Name = currentCampagin.Name
+            };
+        user.Campaigns.Add(newCampagin.Id);
+        await MDBCampagin.InsertOneAsync(newCampagin);
         //string campaginID = MDBCampagin.GetByIdAsync(newCampagin.Id).Id.ToString();
-        NavMan.NavigateTo($"/campagin/{newCampaign.Id}");
+        NavMan.NavigateTo($"/viewCampagin/{newCampagin.Id.ToString()}");
     }
 
     async Task addPlayer(string s)

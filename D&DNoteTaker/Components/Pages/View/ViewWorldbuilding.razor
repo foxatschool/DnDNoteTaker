@@ -1,7 +1,4 @@
-﻿@using Microsoft.AspNetCore.Authorization
-@attribute [Authorize]
-
-@page "/worldbuilding/{WorldbuildingId}"
+﻿@page "/worldbuilding/{WorldbuildingId}"
 @using D_DNoteTaker.Components.Models
 @inject IMongoRepository<Worldbuilding> WorldbuildDB;
 
@@ -15,7 +12,7 @@
         @foreach (var region in worldbuilding.Regions)
         {
             <NavLink class="tab-link"
-                     href="@($"/region/{region.Id}")">
+                     href="@($"/campaignview/{WorldbuildingId}/worldbuilding/{region.Id}")">
                 @region.Name
 
                 <br />
@@ -24,7 +21,7 @@
     }
 </div>
 
-@if (worldbuilding == null)
+@if (worldbuilding is null)
 {
     <p>No worldbuilding found.</p>
 }
@@ -37,7 +34,7 @@ else
         <p>@(worldbuilding.History?.Text ?? "No history available.")</p>
 
         <h3>Regions</h3>
-        @if (worldbuilding.Regions != null && worldbuilding.Regions.Any())
+        @if (worldbuilding.Regions is not null && worldbuilding.Regions.Any())
         {
             <ul>
                 @foreach (var region in worldbuilding.Regions)
@@ -59,7 +56,7 @@ else
 
     private Worldbuilding worldbuilding;
 
-    protected override async Task OnInitializedAsync()
+    protected override async void OnInitialized()
     {
         worldbuilding = await WorldbuildDB.GetByIdAsync(WorldbuildingId);
     }
