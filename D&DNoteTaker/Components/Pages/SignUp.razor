@@ -51,7 +51,7 @@
         var user = new User()
         {
             UserName = Input.Username,
-            Campaigns = Array.Empty<string>()
+            Campaigns = new List<string>()
         };
 
         var result = await UserManager.CreateAsync(user, Input.Password);
