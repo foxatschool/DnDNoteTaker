@@ -44,7 +44,9 @@
     <p style="color:red">Could Not Find: @nameNotFound</p>
 }
 <hr />
-<CreateTextBox textTitle="Notes"/>
+<CreateTextBox @ref="textEditor" textTitle="Notes"/>
+
+<CreateWorldBuilding @ref="worldBuilding" />
 
 <CreateSessions />
 <hr />
@@ -58,6 +60,8 @@
     string AddPerson = "";
     string nameNotFound = "";
     User? user;
+
+    CreateWorldBuilding worldBuilding;
 
     protected override async Task OnInitializedAsync()
     {
@@ -103,9 +107,9 @@
             {
                 textEditor.EventBox += addTextBox;
             }
-            if(worldbuilding != null)
+            if (worldBuilding != null)
             {
-                worldbuilding.worldBuildEvent += addWorldBuilding;
+                worldBuilding.worldBuildEvent += addWorldBuilding;
             }
         }
     }
