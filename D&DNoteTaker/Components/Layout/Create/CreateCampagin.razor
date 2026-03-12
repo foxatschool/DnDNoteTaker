@@ -20,7 +20,7 @@
     <label id="name">Title: </label>
     <InputText id="name" @bind-Value="currentCampagin.Name"/>
 
-    <button type="submit" class="btn btn-primary" style="background-color:black" @onclick="() => submit()">Create Campagin</button>
+    <button type="submit" class="btn btn-primary" style="background-color:black">Create Campagin</button>
     <hr />
 
 </EditForm>
@@ -75,7 +75,8 @@
                 Player = currentCampagin.Player,
                 Name = currentCampagin.Name
             };
-        user.Campaigns.Add(newCampaign.Id.ToString());
+        user.Campaigns = user.Campaigns.Append(newCampaign.Id).ToList();
+        await MDBUser.UpdateAsync(user);
         await MDBCampagin.InsertOneAsync(newCampaign);
         //string campaginID = MDBCampagin.GetByIdAsync(newCampagin.Id).Id.ToString();
         NavMan.NavigateTo($"/campagin/{newCampaign.Id}");
