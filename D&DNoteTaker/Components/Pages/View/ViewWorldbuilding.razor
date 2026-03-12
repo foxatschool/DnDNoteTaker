@@ -1,0 +1,63 @@
+﻿@page "/worldbuilding/{WorldbuildingId}"
+@using D_DNoteTaker.Components.Models
+@inject IMongoRepository<Worldbuilding> WorldbuildDB;
+
+<PageTitle>Campaign Worldbuilding</PageTitle>
+
+<h1>Worldbuilding</h1>
+
+<div class="tab-bar">
+    @if (worldbuilding?.Regions != null)
+    {
+        @foreach (var region in worldbuilding.Regions)
+        {
+            <NavLink class="tab-link"
+                     href="@($"/campaignview/{WorldbuildingId}/worldbuilding/{region.Id}")">
+                @region.Name
+
+                <br />
+            </NavLink>
+        }
+    }
+</div>
+
+@if (worldbuilding is null)
+{
+    <p>No worldbuilding found.</p>
+}
+else
+{
+    <div class="mt-3">
+        <h2>@worldbuilding.Name</h2>
+
+        <h3>History</h3>
+        <p>@(worldbuilding.History?.Text ?? "No history available.")</p>
+
+        <h3>Regions</h3>
+        @if (worldbuilding.Regions is not null && worldbuilding.Regions.Any())
+        {
+            <ul>
+                @foreach (var region in worldbuilding.Regions)
+                {
+                    <li>@region.Name</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No regions found.</p>
+        }
+    </div>
+}
+
+@code {
+    [Parameter]
+    public string WorldbuildingId { get; set; }
+
+    private Worldbuilding worldbuilding;
+
+    protected override async void OnInitialized()
+    {
+        worldbuilding = await WorldbuildDB.GetByIdAsync(WorldbuildingId);
+    }
+}

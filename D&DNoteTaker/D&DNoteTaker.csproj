@@ -14,8 +14,4 @@
     <PackageReference Include="MongoDB.Driver" Version="3.7.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Components\Layout\View\" />
-  </ItemGroup>
-
 </Project>

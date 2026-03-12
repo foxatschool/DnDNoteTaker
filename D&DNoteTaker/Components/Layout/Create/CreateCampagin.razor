@@ -1,9 +1,12 @@
-﻿@page "/createcampagin"
+﻿@page "/createcampagin/{UserId}"
 @using D_DNoteTaker.Components.Models
-@inject MongoRepository<Campaign> MDBCampagin
-@inject MongoRepository<User> MDBUser
+@inject IMongoRepository<Campaign> MDBCampagin
+@inject IMongoRepository<User> MDBUser
+@attribute [StreamRendering]
+@rendermode InteractiveServer
 
-<h3>CreateCampagin</h3>
+
+<h3>Create Campagin</h3>
 
 <PageTitle>Create Capagin</PageTitle>
 
@@ -14,67 +17,72 @@
 
 </EditForm>
 
-<EditForm OnValidSubmit="() => addPlayer(AddPerson)" Model="AddPerson">
+<EditForm FormName="AddDM" OnValidSubmit="() => addPlayer(AddPerson)" Model="AddPerson">
     <label id="dmName">Deungeon Master Username:</label>
     <InputText id="dmName" @bind-Value="AddPerson" />
 
-    <button type="submit" class="btn btn-primary">Add Player</button>
+    <button type="submit" class="btn btn-primary">Add DM</button>
 </EditForm>
 
-<EditForm OnValidSubmit="() => addPlayer(AddPerson)" Model="AddPerson">
+<EditForm FormName="AddPlayer" OnValidSubmit="() => addPlayer(AddPerson)" Model="AddPerson">
     <label id="playerName">Player Username:</label>
     <InputText id="playerName" @bind-Value="AddPerson" />
 
     <button type="submit" class="btn btn-primary">Add Player</button>
 </EditForm>
 
-@if(!nameNotFound.IsWhiteSpace() || !(nameNotFound == null))
+@if(nameNotFound == null)
 {
     <p style="color:red">Could Not Find: @nameNotFound</p>
 }
 <hr />
-
-<EditForm OnValidSubmit="() => addTextBox()" Model="textBox">
-    <label id="title">Title: </label>
-    <InputText id="title" @bind-Value="textBox.Name" />
-
-    <label id="body"></label>
-    <InputTextArea id="body" @bind-Value="textBox.Text" />
-
-    <button type="submit" class="btn btn-primary">Add Description</button>
-</EditForm>
+<CreateTextBox textTitle="Notes"/>
 <hr />
 
 @code 
 {
+    [Parameter]
+    public string UserId { get; set; }
+
     Campaign currentCampagin = new Campaign();
     TextBox textBox = new TextBox();
+    CreateTextBox textEditor;
     string AddPerson = "";
     string nameNotFound = "";
 
-
     async Task submit()
     {
+        await addDM(UserId);
         await MDBCampagin.InsertOneAsync(currentCampagin);
     }
 
-    void addPlayer(string s)
+    async Task addPlayer(string s)
     {
-        List<User> users = MDBUser.GetAllAsync().Result;
-        if (users.Find(p => p.UserName == s) == null)
+        User user = await MDBUser.GetByIdAsync(s);
+        if (currentCampagin.Player.FirstOrDefault(u => u == s) != null && user != null)
         {
-            nameNotFound = s;
+            currentCampagin.DM.Add(s);
         }
-        currentCampagin.Player.Add(s);
     }
 
-    void addDM(string s)
+    protected override void OnAfterRender(bool firstRender)
     {
-        
-        currentCampagin.DM.Add(s);
+        if (firstRender && textEditor != null)
+        {
+            textEditor.EventBox += addTextBox;
+        }
     }
 
-    void addTextBox()
+    async Task addDM(string s)
+    {
+        User user = await MDBUser.GetByIdAsync(s);
+        if (currentCampagin.DM.FirstOrDefault(u => u == s) != null && user != null)
+        {
+            currentCampagin.DM.Add(s);
+        }
+    }
+
+    void addTextBox(object? sender, TextBox textBox)
     {
         currentCampagin.Boxes.Add(textBox);
     }

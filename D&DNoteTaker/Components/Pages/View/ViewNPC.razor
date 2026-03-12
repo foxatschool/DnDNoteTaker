@@ -1,0 +1,48 @@
+﻿@page "/npc/{NPCId}"
+@inject IMongoRepository<NPCs> NPCDB;
+
+@if (npc == null)
+{
+	<p>Loading...</p>
+}
+else
+{
+	<h3>@npc.Name</h3>
+	<h4>Age</h4>
+	<p>@npc.Age.ToString()</p>
+	<h4>Gender</h4>
+	<p>@npc.Gender</p>
+	<h4>Description</h4>
+	<p>@npc.Description?.Text</p>
+
+	@if(npc.JobType != null)
+	{
+		<h4>Job Type</h4>
+		<p>@npc.JobType</p>
+	}
+	@if(npc.Languages != null)
+	{
+		<h4>Languages</h4>
+		<p>@npc.Languages</p>
+	}
+	<h4>@aids</h4>
+
+}
+
+@code {
+	[Parameter]
+	public string NPCId { get; set; } = "";
+
+	private string aids;
+
+	private NPCs npc;
+
+	protected override async Task OnInitializedAsync()
+	{
+		npc = await NPCDB.GetByIdAsync(NPCId);
+		if(npc != null)
+		{
+			aids = (npc.HasAids) ? $"{npc.Name} has aids" : $"{npc.Name} does not have aids";
+		}
+	}
+}
