@@ -48,18 +48,19 @@
 
 <CreateWorldBuilding @ref="worldBuilding" />
 
-<CreateSessions />
+<CreateSessions @ref="sessionEditor"/>
 <hr />
 
 @code 
 {
 
     Campaign currentCampagin = new Campaign();
-    TextBox textBox = new TextBox();
+    TextBox textBox = new TextBox(); 
     CreateTextBox textEditor;
     string AddPerson = "";
     string nameNotFound = "";
     User? user;
+    CreateSessions sessionEditor;
 
     CreateWorldBuilding worldBuilding;
 
@@ -111,6 +112,10 @@
             {
                 worldBuilding.worldBuildEvent += addWorldBuilding;
             }
+            if(sessionEditor != null)
+            {
+                sessionEditor.eventSession += AddSession;
+            }
         }
     }
 
@@ -129,9 +134,15 @@
     {
         currentCampagin.Boxes.Add(textBox);
     }
+
     void addWorldBuilding(object? sender, Worldbuilding worldbuilding)
     {
         currentCampagin.WorldbuildingId = worldbuilding.Id.ToString();
+    }
+
+    void AddSession(object? sender, Sessions session)
+    {
+        currentCampagin.SessionId.Add(session.Id.ToString());
     }
     void NotFound(List<string> notFound)
     {}
