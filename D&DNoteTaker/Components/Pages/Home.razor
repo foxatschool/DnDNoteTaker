@@ -52,12 +52,18 @@ else
 {
     [Parameter]
     public string? AccountId { get; set; } = null;
-
-    public List<Campaign> campaigns = new List<Campaign>();
+    User? user;
+    public List<string> campaigns = new List<Campaign>();
 
 
     protected override async Task OnInitializedAsync()
     {
+        user = await MDBUser.GetUserById(AccountId);
+        if(user != null)
+        {
+            campaigns = user.Campaigns;
+        }
+
         if (AccountId != null)
         {
             List<Campaign> allcampaigns = await MDBCampagin.GetAllAsync();

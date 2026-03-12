@@ -5,8 +5,6 @@ namespace D_DNoteTaker.Components.Models
 {
     public class Campaign : Document
     {
-        //[Required]
-        //public string Id { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]
