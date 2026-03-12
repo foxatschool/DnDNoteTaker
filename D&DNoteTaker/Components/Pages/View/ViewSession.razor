@@ -1,4 +1,5 @@
 ﻿@page "/session/{SessionId}"
+@using D_DNoteTaker.Components.Layout.Create
 
 @rendermode InteractiveServer
 
@@ -36,12 +37,9 @@ else
 		}
 	}
 
-	<button class="btn btn-primary"
-			style="float:right; background-color:black; margin:40px"
-			@onclick="() => ToCreateSession()">
-		Edit Location
-	</button>
+	<CreateNPC></CreateNPC>
 
+	<CreateLocation></CreateLocation>
 }
 
 @code {

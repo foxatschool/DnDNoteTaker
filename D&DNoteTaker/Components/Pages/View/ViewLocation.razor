@@ -1,4 +1,5 @@
 ﻿@page "/location/{locationId}"
+@using D_DNoteTaker.Components.Layout.Create
 @inject IMongoRepository<Location> LocationDB;
 
 @rendermode InteractiveServer
@@ -31,14 +32,9 @@ else
 	<h4>Description</h4>
 	<p>@location.Description.Text</p>
 
-	//Add button to navigate to add location
-    <button class="btn btn-primary"
-            style="float:right; background-color:black; margin:40px"
-            @onclick="() => ToLocationCreate()">Edit Location</button>
-
 }
 
-@code {
+@code {		
 	[Parameter]
 	public string LocationId { get; set; } = "";
 
@@ -47,10 +43,5 @@ else
 	protected override async Task OnInitializedAsync()
 	{
 		location = await LocationDB.GetByIdAsync(LocationId);
-	}
-
-	public void ToLocationCreate()
-	{
-		nav.NavigateTo($"/createlocation", true, true);
-	}
+	}	
 }

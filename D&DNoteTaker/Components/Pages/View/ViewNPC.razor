@@ -1,4 +1,5 @@
 ﻿@page "/npc/{NPCId}"
+@using D_DNoteTaker.Components.Layout.Create
 @inject IMongoRepository<NPCs> NPCDB;
 @inject NavigationManager nav;
 
@@ -31,11 +32,7 @@ else
 	}
 	<h4>@aids</h4>
 
-	<button class="btn btn-primary"
-			style="float:right; background-color:black; margin:40px"
-			@onclick="() => ToNPCCreate()">
-		Edit Location
-	</button>
+	<CreateTextBox></CreateTextBox>
 }
 
 @code {
