@@ -16,17 +16,19 @@ else
     <hr />
 
     <div class="tab-bar">
-        <NavLink class="tab-button" href="@($"/campaignview/{CampaignId}/worldbuilding")">
+        <NavLink class="tab-button" href="@($"/worldbuilding/{campaign.WorldbuildingId}")">
             <h3>Worldbuilding</h3>
         </NavLink>
 
-        <NavLink class="tab-button" href="@($"/campaignview/{CampaignId}/npcs")">
+        @* <NavLink class="tab-button" href="@($"/campaignview/{CampaignId}/npcs")">
             <h3>NPCs</h3>
-        </NavLink>
-
-        <NavLink class="tab-button" href="@($"/campaignview/{CampaignId}/sessions")">
-            <h3>Sessions</h3>
-        </NavLink>
+        </NavLink> *@
+        @if (campaign.Sessionids.Count() != 0)
+        {
+            <NavLink class="tab-button" href="@($"/session/{campaign.Sessionids[0]}")">
+                <h3>Sessions</h3>
+            </NavLink>
+        }
     </div>
 
     <div class="mt-3">
