@@ -5,6 +5,7 @@
 
 @inject NavigationManager nav;
 @inject IMongoRepository<Sessions> SessionDB;
+@attribute [StreamRendering]
 
 @if (session == null)
 {
@@ -12,11 +13,21 @@
 }
 else
 {
-	<h3>@session.SessionNum</h3>
+	<h1>Session @session.SessionNum</h1>
 	<h4>Summary</h4>
-	<p>@session.Summary.Text</p>
+
+	@if (session.Summary.Text != null)
+	{
+		<p>@session.Summary.Text</p>
+	} else
+	{
+		<p>No session summary</p>
+	}
+
+	<hr/>
 	<h4>Date</h4>
 	<p>@session.DateOfSession.ToString()</p>
+	<hr/>
 	@if(session.Locations != null)
 	{
 		<h4>Locations Visited</h4>
@@ -27,6 +38,7 @@ else
 		}
 	}
 
+	<hr/>
 	@if (session.NPCs != null)
 	{
 		<h4>NPCs encountered</h4>
@@ -36,10 +48,6 @@ else
 			<div></div>
 		}
 	}
-
-	<CreateNPC></CreateNPC>
-
-	<CreateLocation></CreateLocation>
 }
 
 @code {
@@ -61,10 +69,5 @@ else
 	public void ToNPC(string id)
 	{
 		nav.NavigateTo($"/npc/{id}", true, true);
-	}
-
-	public void ToCreateSession()
-	{
-		nav.NavigateTo($"/createsession", true, true);
 	}
 }

@@ -6,11 +6,11 @@ namespace D_DNoteTaker.Components.Models
     public class Sessions : Document
     {
         public string CampaginId { get; set; }
+
         [Required]
         public int SessionNum { get; set; }
 
-        [Required]
-        public TextBox Summary { get; set; }
+        public TextBox Summary { get; set; } = new TextBox();
 
         [Required]
         public DateOnly DateOfSession { get; set; }

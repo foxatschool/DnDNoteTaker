@@ -2,6 +2,7 @@
 @using D_DNoteTaker.Components.Models
 
 @inject IMongoRepository<Campaign> MDBCampaign
+@inject IMongoRepository<Sessions> MDBSession
 @attribute [StreamRendering]
 
 <PageTitle>View Campaign</PageTitle>
@@ -18,39 +19,40 @@ else
 
         <hr />
 
+        <div>
+            <NavLink href="@($"/newsession/{campaign.Id}")">
+                <h5>Create New Session</h5>
+            </NavLink>
+
+            <NavLink href="@($"/newnpc/{campaign.Id}")">
+                <h5>Create New NPC</h5>
+            </NavLink>
+        </div>
+
+        <hr/>
+
         <div class="tab-bar">
             @if (campaign.WorldbuildingId != null)
             {
                 <NavLink class="tab-button" href="@($"/worldbuilding/{campaign.WorldbuildingId}/{CampaignId}")">
-                    <h3>Worldbuilding</h3>
+                    <h3>View Worldbuilding</h3>
                 </NavLink>
+                <hr/>
             }
 
-        @* <NavLink class="tab-button" href="@($"/campaignview/{CampaignId}/npcs")">
-            <h3>NPCs</h3>
-        </NavLink> *@
-
-            @if (campaign.SessionIds != null && sessionsCount != 0)
+            @if (currentSessions != null && sessionsCount != 0)
             {
                 <h4><b>Sessions</b></h4>
-                @for(int sessionNumber = 0; sessionNumber < sessionsCount; sessionNumber++)
+                @foreach (Sessions session in currentSessions)
                 {
-                    <NavLink class="tab-button" href="@($"/session/{campaign.SessionIds[sessionNumber]}")">
-                        <h3>Session @sessionNumber</h3>
+                    <NavLink class="tab-button" href="@($"/session/{session.Id}")">
+                        <h5>Session @session.SessionNum</h5>
                     </NavLink>
                 }
             }
         </div>
 
-        <div>
-            <NavLink href="@($"/newsession/{campaign.Id}")">
-                <h3>Create New Session</h3>
-            </NavLink>
-
-            <NavLink href="@($"/newnpc/{campaign.Id}")">
-                <h3>Create New NPC</h3>
-            </NavLink>
-        </div>
+        
 
         @if (campaign.Boxes != null)
         {
@@ -76,6 +78,7 @@ else
     public string CampaignId { get; set; }
 
     private Campaign? campaign;
+    private List<Sessions> currentSessions;
 
     int sessionsCount;
 
@@ -86,7 +89,10 @@ else
         if (CampaignId != null)
         {
             campaign = await MDBCampaign.GetByIdAsync(CampaignId);
-            sessionsCount = campaign.SessionIds.Count();
+            List<Sessions> allSessions = await MDBSession.GetAllAsync();
+            // sessions = await MDBCampaign.
+            currentSessions = allSessions.FindAll(session => session.CampaginId == CampaignId);
+            sessionsCount = currentSessions.Count();
             hasCampaignID = true;
         }
         else hasCampaignID = false;
