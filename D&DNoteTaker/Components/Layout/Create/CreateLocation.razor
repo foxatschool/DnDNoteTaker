@@ -1,6 +1,7 @@
 ﻿@page "/newlocation/{CurrentCampaginId}/{CurrentRegionId}"
 @using D_DNoteTaker.Components.Models
 @inject IMongoRepository<Location> MDBLocation
+@inject IMongoRepository<Region> MDBRegion
 @inject NavigationManager navMan
 
 <h3>Create Location</h3>
@@ -49,6 +50,11 @@
 
     async Task submit()
     {
+        Region currentRegion = await MDBRegion.GetByIdAsync(CurrentRegionId);
+        if(currentRegion != null)
+        {
+            currentRegion.Locations.Append(location);
+        }
         location.RegionId = CurrentRegionId;
         location.CampaginId = CurrentCampaginId;
         await MDBLocation.InsertOneAsync(location);
