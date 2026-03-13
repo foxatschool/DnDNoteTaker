@@ -5,25 +5,31 @@
     <label for="name">Name: </label>
     <InputText id="name" @bind-Value="currentNPC.Name"/>
 
+    <br/>
     <label for="Gender">Gender: </label>
     <InputText id="Gender" @bind-Value="currentNPC.Gender" />
 
+    <br/>
     <label for="aids">Aids? </label>
     <InputCheckbox id="aids" @bind-Value="currentNPC.HasAids" />
 
+    <br/>
     <label for="age">Age: </label>
     <InputNumber TValue="int" id="age" @bind-Value="currentNPC.Age" />
 
+    <br/>
     <label for="job">Job: </label>
     <InputText id="job" @bind-Value="currentNPC.JobType" />
 
+    <br/>
     <label for="languages">Languages: </label>
     <InputText id="languages" @bind-Value="currentNPC.Languages" />
+
+<button class="btn btn-primary">Create NPC</button>
 </EditForm>
 
 <CreateTextBox @ref="editTextBox" textTitle="Description:"/>
 
-<button class="btn btn-primary" @onclick="() => submit()">Create NPC</button>
 
 @code 
 {

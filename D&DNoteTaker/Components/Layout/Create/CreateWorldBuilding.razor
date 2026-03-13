@@ -10,13 +10,13 @@
     <label id="Name">World Name:</label>
     <InputText id="Name" @bind-Value="currentWorldbuilding.Name" />
     
+<button class="btn btn-primary">Create World</button>
 </EditForm>
 
 <CreateRegion @ref="editRegion"/>
 
 <CreateTextBox @ref="textEditor" textTitle="Describe Event:" />
 
-<button class="btn btn-primary" @onclick="() => submit()">Create World</button>
 
 
 @code
