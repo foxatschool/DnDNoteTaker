@@ -12,21 +12,32 @@
 }
 else{
 	<h3>@region.Name</h3>
+
+	<div>
+		<NavLink href="@($"/newlocation/{CampaignId}/{RegionId}")">
+			<h4>Add New Location</h4>
+		</NavLink>
+	</div>
+
 	<h4>Locations</h4>
-	@foreach(Location location in region.Locations){
-		<button @onclick="() => ToLocation(location.Id)">@location.Name</button>
-		<div></div>
+	@if (region.Locations != null)
+	{
+		@foreach (Location location in region.Locations)
+		{
+			<button @onclick="() => ToLocation(location.Id)">@location.Name</button>
+			<div></div>
+		}
+	} else
+	{
+		<p>No Locations Found</p>
 	}
+
 	if(region.Description != null){
 		<h4>Description</h4>
 		<p>@region.Description.Text</p>
 	}
 
-	<div>
-		<NavLink href="@($"/newlocation/{CampaignId}/{RegionId}")">
-			<h3>Add New Location</h3>
-		</NavLink>
-	</div>
+	
 	
 }
 @code {
