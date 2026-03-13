@@ -3,6 +3,7 @@
 @inject IMongoRepository<Location> MDBLocation
 @inject IMongoRepository<Region> MDBRegion
 @inject NavigationManager navMan
+@rendermode InteractiveServer
 
 <h3>Create Location</h3>
 
@@ -53,12 +54,14 @@
         Region currentRegion = await MDBRegion.GetByIdAsync(CurrentRegionId);
         if(currentRegion != null)
         {
-            currentRegion.Locations.Append(location);
+            currentRegion.Locations ??= new List<Location>();
+            currentRegion.Locations.Add(location);
         }
         location.RegionId = CurrentRegionId;
         location.CampaginId = CurrentCampaginId;
         await MDBLocation.InsertOneAsync(location);
-        navMan.NavigateTo($"/region/{CurrentRegionId}");
+        await MDBRegion.ReplaceOneAsync(currentRegion);
+        navMan.NavigateTo($"/region/{CurrentRegionId}/{CurrentCampaginId}");
     }
 
     private void addTextBox(object? sender, TextBox textBox)

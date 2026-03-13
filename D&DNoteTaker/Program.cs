@@ -15,6 +15,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+builder.Services.AddAntiforgery();
+
 builder.Services.AddScoped<IMongoRepository<Testing>>((sp) => {
     var client = new MongoClient("mongodb+srv://default:password123!@user.xummolz.mongodb.net/?appName=User");
     var database = client.GetDatabase("Testing");

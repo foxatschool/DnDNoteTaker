@@ -28,10 +28,11 @@ else
 		<p>@location.Population.ToString()</p>
 	}
 
-
-	<h4>Description</h4>
-	<p>@location.Description.Text</p>
-
+	@if (location.Description != null)
+	{
+		<h4>Description</h4>
+		<p>@location.Description.Text</p>
+	}
 }
 
 @code {		

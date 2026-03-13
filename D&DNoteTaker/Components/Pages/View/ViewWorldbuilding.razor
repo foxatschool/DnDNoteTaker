@@ -27,7 +27,7 @@ else
         <p>@(worldbuilding.History?.Text ?? "No history available.")</p>
 
         <div>
-            <NavLink href="@($"/newregion/{WorldbuildingId}")">
+            <NavLink href="@($"/newregion/{WorldbuildingId}/{CampaignId}")">
                 <h3>Add New Region</h3>
             </NavLink>
         </div>
@@ -39,7 +39,7 @@ else
                 @foreach (var region in worldbuilding.Regions)
                 {
                     <li>
-                        <NavLink href="@($"/region/{region.Id}/{CampaginId}")">
+                        <NavLink href="@($"/region/{region.Id}/{CampaignId}")">
                             <p>@region.Name</p>
                         </NavLink>
                     </li>
@@ -58,7 +58,7 @@ else
     public string WorldbuildingId { get; set; } = "";
 
     [Parameter]
-    public string CampaginId { get; set; }
+    public string CampaignId { get; set; }
 
     private Worldbuilding worldbuilding;
 
