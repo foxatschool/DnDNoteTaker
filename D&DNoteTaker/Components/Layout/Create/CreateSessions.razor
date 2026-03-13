@@ -7,28 +7,32 @@
     <label for="Date">Session Date:</label>
     <InputDate TValue="DateOnly" @bind-Value="currentSession.DateOfSession" />
 
-    <button type="submit" @onclick="() => submit()" class="btn btn-primary">Create Session</button>
+    <button type="submit" class="btn btn-primary">Create Session</button>
 </EditForm>
 
-<CreateLocation @ref="editLoacation" />
+@if (currentSession.Locations != null)
+{
+    <EditForm Model="selectedLocation" OnValidSubmit="() => addLocation(selectedLocation)">
+        <InputSelect TValue="Location" @bind-Value="selectedLocation">
+        
+            @foreach (Location location in currentSession.Locations)
+            {
+                <option value="@location">@location.Name</option>
+            }
+        </InputSelect>
 
-<EditForm Model="editLoacation">
-    <InputSelect @bind-Value="editLoacation">
-        @foreach (Location location in currentSession.Locations)
-        {
-            <option value="@location">@location.Name</option>
-        }
-    </InputSelect>
-</EditForm>
+        <button type="submit">Add Location</button>
+    </EditForm>
+}
 
 <CreateNPC @ref="editNPC" />
-<CreateTextBox @ref="editTextBox" mainTitle="Session Title:" textTitle="Description" />
+<CreateTextBox @ref="editTextBox" mainTitle="Session Title:" textTitle="Description:" />
 
 @code
 {
     private Sessions currentSession = new Sessions();
 
-    private CreateLocation editLoacation;
+    private Location selectedLocation;
     private CreateNPC editNPC;
     private CreateTextBox editTextBox;
 
@@ -42,7 +46,7 @@
     {
         currentSession.Summary = textBox;
     }
-    private void addLocation(object? sender, Location location)
+    private void addLocation(Location location)
     {
         currentSession.Locations.Append(location);
     }
@@ -58,10 +62,6 @@
             if (editTextBox != null)
             {
                 editTextBox.EventBox += addTextBox;
-            }
-            if (editLoacation != null)
-            {
-                editLoacation.EventLocation += addLocation;
             }
             if (editNPC != null)
             {

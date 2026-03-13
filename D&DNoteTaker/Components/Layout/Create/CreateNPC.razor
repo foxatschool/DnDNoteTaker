@@ -28,7 +28,7 @@
 <button class="btn btn-primary">Create NPC</button>
 </EditForm>
 
-<CreateTextBox @ref="editTextBox" textTitle="Description:"/>
+<CreateTextBox @ref="editTextBox" textTitle="Description:" hideMainTitle="true"/>
 
 
 @code 
@@ -42,6 +42,7 @@
     {
         EventNPC.Invoke(this, currentNPC);
     }
+
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender && editTextBox != null)
@@ -49,6 +50,7 @@
             editTextBox.EventBox += addTextBox;
         }
     }
+
     private void addTextBox(object? sender, TextBox textBox)
     {
         currentNPC.Description = textBox;
