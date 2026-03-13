@@ -1,5 +1,7 @@
 ﻿@page "/newnpc/{CurrentCampaginId}"
 @inject IMongoRepository<NPCs> MDBNPCs
+@inject NavigationManager navMan
+
 <h3>CreateNPC</h3>
 
 <EditForm OnValidSubmit="() => submit()" Model="currentNPC">
@@ -44,6 +46,7 @@
     {
         currentNPC.campaginId = CurrentCampaginId;
         await MDBNPCs.InsertOneAsync(currentNPC);
+        navMan.NavigateTo($"/campagin/{CurrentCampaginId}");
     }
 
     protected override void OnAfterRender(bool firstRender)

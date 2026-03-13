@@ -1,5 +1,7 @@
-﻿@using D_DNoteTaker.Components.Models
+﻿@page "/newlocation/{CurrentRegionId}"
+@using D_DNoteTaker.Components.Models
 @inject IMongoRepository<Location> MDBLocation
+@inject NavigationManager navMan
 
 <h3>Create Location</h3>
 
@@ -36,16 +38,18 @@
 
 @code 
 {
+    [Parameter]
+    public string CurrentRegionId { get; set; }
+
     CreateTextBox? editTextBox;
     Location location = new Location();
     string newPOI = "";
 
-    public event EventHandler<Location>? EventLocation;
-
     async Task submit()
     {
-        EventLocation?.Invoke(this, location);
+        location.RegionId = CurrentRegionId;
         await MDBLocation.InsertOneAsync(location);
+        navMan.NavigateTo($"/region/{CurrentRegionId}");
     }
 
     private void addTextBox(object? sender, TextBox textBox)
