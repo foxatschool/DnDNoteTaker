@@ -28,10 +28,10 @@
 </EditForm>
 
 <hr/>
-<input @bind="newPOI" />
-
-<button @onclick="addPOI">Add POI</button>
-
+<div>
+    <input @bind="newPOI" />
+    <button @onclick="addPOI">Add POI</button>
+</div>
 
 <hr />
 <CreateTextBox @ref="editTextBox" hideMainTitle="true" textTitle="Location Description:"/>
