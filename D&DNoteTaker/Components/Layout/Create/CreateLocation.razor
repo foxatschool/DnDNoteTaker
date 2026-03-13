@@ -28,7 +28,7 @@
 </EditForm>
 
 <hr/>
-<EditForm OnValidSubmit="addPOI" Model="newPOI">
+<EditForm OnValidSubmit="() => addPOI()" Model="newPOI">
     <label for="poi">Points of Intrest</label>
     <InputText id="poi" @bind-Value="newPOI" />
     
@@ -79,6 +79,7 @@
 
     void addPOI()
     {
+        location.POIs ??= new List<string>();
         location.POIs.Add(newPOI);
     }
 }
