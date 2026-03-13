@@ -1,5 +1,6 @@
 ﻿@page "/newsession/{CurrentCampaginId}"
 @inject IMongoRepository<Sessions> MDBSessions
+@inject IMongoRepository<NPCs> MDBNPCs
 @inject NavigationManager navMan
 
 <h3>CreateSessions</h3>
@@ -29,11 +30,11 @@
     </EditForm>
 }
 
-@if (currentSession.NPCs != null && currentSession.NPCs.Count() > 0)
+@if (NPCs != null && NPCs.Count() > 0)
 {
     <EditForm Model="selectedNPC" OnValidSubmit="() => addNPC(selectedNPC)">
         <InputSelect TValue="NPCs" @bind-Value="selectedNPC">
-            @foreach (NPCs npc in currentSession.NPCs)
+            @foreach (NPCs npc in NPCs)
             {
                 <option value="@npc">@npc.Name</option>
             }
@@ -55,6 +56,7 @@
     private NPCs selectedNPC = new NPCs();
     private CreateTextBox editTextBox;
 
+    private List<NPCs> NPCs = new List<NPCs>();
 
     private async Task submit()
     {
@@ -62,15 +64,18 @@
         await MDBSessions.InsertOneAsync(currentSession);
         navMan.NavigateTo($"/campagin/{CurrentCampaginId}");
     }
+
     private void addTextBox(object? sender, TextBox textBox)
     {
         currentSession.Summary = textBox;
     }
+
     private void addLocation(Location location)
     {
         if (location != null) currentSession.Locations.Append(location);
 
     }
+
     private void addNPC(NPCs NPC)
     {
         if (NPC != null) currentSession.NPCs.Append(NPC);
@@ -85,7 +90,12 @@
                 editTextBox.EventBox += addTextBox;
             }
         }
+    }
 
+    protected override async Task OnInitializedAsync()
+    {
+        List<NPCs> allNPCs = await MDBNPCs.GetAllAsync();
+        NPCs = allNPCs.FindAll(npc => npc.campaginId == CurrentCampaginId);
     }
 
 }
