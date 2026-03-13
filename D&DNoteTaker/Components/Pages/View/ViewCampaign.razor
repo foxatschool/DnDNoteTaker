@@ -43,7 +43,13 @@ else
         </div>
 
         <div>
+            <NavLink href="@($"/newsession/{campaign.Id}")">
+                <h3>Create New Session</h3>
+            </NavLink>
 
+            <NavLink href="@($"/newnpc/{campaign.Id}")">
+                <h3>Create New NPC</h3>
+            </NavLink>
         </div>
 
         @if (campaign.Boxes != null)

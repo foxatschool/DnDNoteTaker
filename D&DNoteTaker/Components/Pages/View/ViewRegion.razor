@@ -2,7 +2,7 @@
 @using D_DNoteTaker.Components.Layout.Create
 @attribute [Authorize]
 
-@page "/region/{regionId}"
+@page "/region/{regionId}/{CampaignId}"
 @rendermode InteractiveServer
 
 @inject NavigationManager nav;
@@ -25,13 +25,20 @@ else{
 		<p>@region.Description.Text</p>
 	}
 
-	<CreateLocation></CreateLocation>
+	<div>
+		<NavLink href="@($"/newlocation/{CampaginId}/{RegionId}")">
+			<h3>Add New Location</h3>
+		</NavLink>
+	</div>
 	
 }
 @code {
 	[Parameter]
 	public string RegionId { 
 		get; set; } = "";
+
+	[Parameter]
+	public string CampaginId { get; set; }
 
 	private Region region;
 

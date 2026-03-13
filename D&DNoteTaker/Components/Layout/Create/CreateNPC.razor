@@ -44,7 +44,7 @@
 
     private async Task submit()
     {
-        currentNPC.campaginId = CurrentCampaginId;
+        currentNPC.CampaginId = CurrentCampaginId;
         await MDBNPCs.InsertOneAsync(currentNPC);
         navMan.NavigateTo($"/campagin/{CurrentCampaginId}");
     }

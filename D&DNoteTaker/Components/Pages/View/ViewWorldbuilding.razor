@@ -1,4 +1,4 @@
-﻿@page "/worldbuilding/{WorldbuildingId}"
+﻿@page "/worldbuilding/{WorldbuildingId}/{CampaignId}"
 @using D_DNoteTaker.Components.Models
 @inject IMongoRepository<Worldbuilding> WorldbuildDB;
 @attribute [StreamRendering]
@@ -26,13 +26,23 @@ else
         <h3>History</h3>
         <p>@(worldbuilding.History?.Text ?? "No history available.")</p>
 
+        <div>
+            <NavLink href="@($"/newregion/{WorldbuildingId}")">
+                <h3>Add New Region</h3>
+            </NavLink>
+        </div>
+
         <h3>Regions</h3>
         @if (worldbuilding.Regions is not null && worldbuilding.Regions.Any())
         {
             <ul>
                 @foreach (var region in worldbuilding.Regions)
                 {
-                    <li>@region.Name</li>
+                    <li>
+                        <NavLink href="@($"/region/{region.Id}/{CampaginId}")">
+                            <p>@region.Name</p>
+                        </NavLink>
+                    </li>
                 }
             </ul>
         }
@@ -46,6 +56,9 @@ else
 @code {
     [Parameter]
     public string WorldbuildingId { get; set; } = "";
+
+    [Parameter]
+    public string CampaginId { get; set; }
 
     private Worldbuilding worldbuilding;
 

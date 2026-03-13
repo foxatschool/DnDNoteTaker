@@ -13,16 +13,11 @@
     <button class="btn btn-primary">Create World</button>
 </EditForm>
 
-<hr/>
-<CreateRegion @ref="editRegion"/>
-
 @code
 {
     public event EventHandler<Worldbuilding>? worldBuildEvent;
 
     Worldbuilding currentWorldbuilding = new Worldbuilding();
-
-    CreateRegion editRegion = null;
 
     async Task submit()
     {
@@ -33,19 +28,5 @@
     private void addTextBox(object? sender, TextBox textBox)
     {
         currentWorldbuilding.History = textBox;
-    }
-
-    private void addRegion(object? sender, Region region)
-    {
-        currentWorldbuilding.Regions ??= new List<Region>();
-        currentWorldbuilding.Regions.Add(region);
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        if (firstRender && editRegion != null)
-        {
-            editRegion.EventRegion += addRegion;
-        }
     }
 }
