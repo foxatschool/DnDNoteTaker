@@ -9,19 +9,11 @@
 <div class="tab-bar">
     @if (worldbuilding?.Regions != null)
     {
-        @foreach (var region in worldbuilding.Regions)
-        {
-            <NavLink class="tab-link"
-                     href="@($"/campaignview/{WorldbuildingId}/worldbuilding/{region.Id}")">
-                @region.Name
-
-                <br />
-            </NavLink>
-        }
+        
     }
 </div>
 
-@if (worldbuilding is null)
+@if (worldbuilding == null)
 {
     <p>No worldbuilding found.</p>
 }
@@ -52,7 +44,7 @@ else
 
 @code {
     [Parameter]
-    public string WorldbuildingId { get; set; }
+    public string WorldbuildingId { get; set; } = "";
 
     private Worldbuilding worldbuilding;
 
