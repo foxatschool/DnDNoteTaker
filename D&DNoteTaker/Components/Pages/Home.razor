@@ -73,12 +73,16 @@ else
             }
         }
 
-        
+
     }
 
-    public void deleteCampagin(Campaign campaign)
+    public async Task deleteCampagin(Campaign campaign)
     {
-        user.Campaigns.Remove(campaign.Id);
+        if (user != null)
+        {
+            user.Campaigns.Remove(campaign.Id);
+            await MDBUser.UpdateAsync(user);
+        }
     }
     public void createCampagin()
     {

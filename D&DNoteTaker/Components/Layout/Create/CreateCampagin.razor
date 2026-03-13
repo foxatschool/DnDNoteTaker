@@ -39,17 +39,18 @@
     <button type="submit" class="btn btn-primary" style="background-color:black">Add Player</button>
 </EditForm>
 
+<CreateTextBox @ref="textEditor" textTitle="Campaign Summary:" hideMainTitle="true" />
+
+<hr/>
+<CreateWorldBuilding @ref="worldBuilding" />
+
+@* <CreateSessions @ref="sessionEditor" /> *@
+<hr />
+
 @if(nameNotFound == null)
 {
     <p style="color:red">Could Not Find: @nameNotFound</p>
 }
-<hr />
-<CreateTextBox @ref="textEditor" textTitle="Notes"/>
-
-<CreateWorldBuilding @ref="worldBuilding" />
-
-<CreateSessions @ref="sessionEditor"/>
-<hr />
 
 @code 
 {
@@ -80,12 +81,12 @@
                 Boxes = currentCampagin.Boxes,
                 DM = currentCampagin.DM,
                 Player = currentCampagin.Player,
-                Name = currentCampagin.Name
+                Name = currentCampagin.Name,
+                WorldbuildingId = currentCampagin.WorldbuildingId
             };
         user.Campaigns = user.Campaigns.Append(newCampaign.Id).ToList();
         await MDBUser.UpdateAsync(user);
         await MDBCampagin.InsertOneAsync(newCampaign);
-        //string campaginID = MDBCampagin.GetByIdAsync(newCampagin.Id).Id.ToString();
         NavMan.NavigateTo($"/campagin/{newCampaign.Id}");
     }
 
@@ -132,18 +133,19 @@
 
     void addTextBox(object? sender, TextBox textBox)
     {
-        currentCampagin.Boxes.Add(textBox);
+        currentCampagin.Boxes = currentCampagin.Boxes.Append(textBox).ToList();
     }
 
     void addWorldBuilding(object? sender, Worldbuilding worldbuilding)
     {
-        currentCampagin.WorldbuildingId = worldbuilding.Id.ToString();
+        currentCampagin.WorldbuildingId = worldbuilding.Id;
     }
 
     void AddSession(object? sender, Sessions session)
     {
-        currentCampagin.SessionIds.Add(session.Id.ToString());
+        currentCampagin.SessionIds = currentCampagin.SessionIds.Append(session.Id).ToList();
     }
+
     void NotFound(List<string> notFound)
     {}
 }

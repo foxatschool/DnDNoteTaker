@@ -1,36 +1,38 @@
 ﻿@using D_DNoteTaker.Components.Models
+@inject IMongoRepository<Location> MDBLocation
 
 <h3>Create Location</h3>
 
 <EditForm OnValidSubmit="submit" Model="@location">
     <label for="name">Location Name:</label>
     <InputText id="name" @bind-Value="location.Name"/>
+    <br/>
 
     <label for="environment">Type of Environment: </label>
     <InputText id="environment" @bind-Value="location.Environment"/>
+    <br />
 
     <label for="climate">Climate: </label>
     <InputText id="climate" @bind-Value="location.Climate"/>
+    <br />
 
     <label for="population">Population: </label>
     <InputNumber id="populaion" TValue="float?" @bind-Value="location.Population"/>
+    <br />
 
     <button type="submit"  class="btn btn-primary">Add Location</button>
 </EditForm>
 
+<hr/>
 <EditForm OnValidSubmit="addPOI" Model="newPOI">
     <label for="poi">Points of Intrest</label>
     <InputText id="poi" @bind-Value="newPOI" />
-
     
     <button type="submit" @onclick="() => addPOI()" class="btn btn-primary">Add POI</button>
 </EditForm>
 
 <hr />
-<CreateTextBox @ref="editTextBox" mainTitle="" textTitle="Description"/>
-<hr />
-
-
+<CreateTextBox @ref="editTextBox" hideMainTitle="true" textTitle="Location Description:"/>
 
 @code 
 {
@@ -40,9 +42,10 @@
 
     public event EventHandler<Location>? EventLocation;
 
-    void submit()
+    async Task submit()
     {
         EventLocation?.Invoke(this, location);
+        await MDBLocation.InsertOneAsync(location);
     }
 
     private void addTextBox(object? sender, TextBox textBox)
@@ -57,6 +60,7 @@
             editTextBox.EventBox += addTextBox;
         }
     }
+
     void addPOI()
     {
         location.POIs.Add(newPOI);

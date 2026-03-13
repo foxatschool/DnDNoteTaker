@@ -70,11 +70,10 @@ builder.Services.AddIdentityMongoDbProvider<User>(
         identity.SignIn.RequireConfirmedAccount = false;
         identity.SignIn.RequireConfirmedEmail = false;
         identity.SignIn.RequireConfirmedPhoneNumber = false;
-        // other Identity options here
     },
     mongo =>
     {
-        mongo.ConnectionString = "mongodb+srv://default:password123!@user.xummolz.mongodb.net/Campagin?appName=User";
+        mongo.ConnectionString = "mongodb+srv://default:password123!@user.xummolz.mongodb.net/Campaign?appName=User";
     });
 
 builder.Services.AddCascadingAuthenticationState();

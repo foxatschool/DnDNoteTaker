@@ -1,5 +1,4 @@
-﻿
-<h3>CreateSessions</h3>
+﻿<h3>CreateSessions</h3>
 
 <EditForm OnValidSubmit="() => submit()" Model="currentSession">
     <label for="sessionNum">Session Number:</label>
@@ -12,6 +11,16 @@
 </EditForm>
 
 <CreateLocation @ref="editLoacation" />
+
+<EditForm Model="editLoacation">
+    <InputSelect @bind-Value="editLoacation">
+        @foreach (Location location in currentSession.Locations)
+        {
+            <option value="@location">@location.Name</option>
+        }
+    </InputSelect>
+</EditForm>
+
 <CreateNPC @ref="editNPC" />
 <CreateTextBox @ref="editTextBox" mainTitle="Session Title:" textTitle="Description" />
 
@@ -35,7 +44,7 @@
     }
     private void addLocation(object? sender, Location location)
     {
-        currentSession.Locations.Add(location);
+        currentSession.Locations.Append(location);
     }
     private void addNPC(object? sender, NPCs NPC)
     {

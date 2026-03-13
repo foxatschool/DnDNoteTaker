@@ -1,16 +1,17 @@
-﻿
+﻿@inject IMongoRepository<Region> MDBRegion
 <h3>CreateRegion</h3>
 
 <EditForm OnValidSubmit="() => submit()" Model="title">
     <label for="title">Region Title:</label>
     <InputText id="title" @bind-Value="title"/>
 
-    <button class="btn btn-primary" @onclick="() => submit()">Create Region</button>
+    <button type="submit" class="btn btn-primary">Create Region</button>
 </EditForm>
 
-<CreateLocation @ref="editLocation"/>
+<CreateTextBox @ref="editTextBox" textTitle="Region Description:" hideMainTitle="true" />
 
-<CreateTextBox @ref="editTextBox" textTitle="Description:"/>
+<hr/>
+<CreateLocation @ref="editLocation"/>
 
 @code 
 {
@@ -21,10 +22,14 @@
     private CreateTextBox editTextBox;
 
     private string title="";
-    private void submit()
+
+    private async Task submit()
     {
-        EventRegion.Invoke(this, region);
+        region.Name = title;
+        EventRegion?.Invoke(this, region);
+        await MDBRegion.InsertOneAsync(region);
     }
+
     protected override void OnAfterRender(bool firstRender)
     {
         if (firstRender && editTextBox != null)
@@ -36,13 +41,15 @@
             editLocation.EventLocation += addLocation;
         }
     }
+
     private void addTextBox(object? sender, TextBox textBox)
     {
         region.Description = textBox;
     }
+
     private void addLocation(object? sender, Location location)
     {
-        region.Locations.Add(location);
+        region.Locations = region.Locations.Append(location).ToList();
     }
 
 }

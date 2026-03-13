@@ -2,6 +2,7 @@
 @using D_DNoteTaker.Components.Models
 
 @inject IMongoRepository<Campaign> MDBCampaign
+@attribute [StreamRendering]
 
 <PageTitle>View Campaign</PageTitle>
 
@@ -11,38 +12,74 @@
 }
 else
 {
-    <h1>@campaign.Name</h1>
+    @if (hasCampaignID)
+    {
+        <h1>@campaign.Name</h1>
 
-    <hr />
+        <hr />
 
-    <div class="tab-bar">
-        <NavLink class="tab-button" href="@($"/worldbuilding/{campaign.WorldbuildingId}")">
-            <h3>Worldbuilding</h3>
-        </NavLink>
+        <div class="tab-bar">
+            @if (campaign.WorldbuildingId != null)
+            {
+                <NavLink class="tab-button" href="@($"/worldbuilding/{campaign.WorldbuildingId}")">
+                    <h3>Worldbuilding</h3>
+                </NavLink>
+            }
 
         @* <NavLink class="tab-button" href="@($"/campaignview/{CampaignId}/npcs")">
             <h3>NPCs</h3>
         </NavLink> *@
-        @if (campaign.SessionIds != null && campaign.SessionIds.Count() != 0)
-        {
-            <NavLink class="tab-button" href="@($"/session/{campaign.SessionIds[0]}")">
-                <h3>Sessions</h3>
-            </NavLink>
-        }
-    </div>
 
-    <div class="mt-3">
-    </div>
+            @if (campaign.SessionIds != null && sessionsCount != 0)
+            {
+                <h4><b>Sessions</b></h4>
+                @for(int sessionNumber = 0; sessionNumber < sessionsCount; sessionNumber++)
+                {
+                    <NavLink class="tab-button" href="@($"/session/{campaign.SessionIds[sessionNumber]}")">
+                        <h3>Session @sessionNumber</h3>
+                    </NavLink>
+                }
+                
+            }
+        </div>
+
+        @if (campaign.Boxes != null)
+        {
+            foreach (TextBox textBox in campaign.Boxes)
+            {
+                <h3>@textBox.Name</h3>
+                <p>@textBox.Text</p>
+            }
+        }
+
+        <div class="mt-3">
+        </div>
+    } else
+    {
+        <h1>Can't find campaign with id: @CampaignId</h1>
+    }
+
+
 }
 
 @code {
     [Parameter]
-    public string CampaignId { get; set; } = string.Empty;
+    public string CampaignId { get; set; }
 
     private Campaign? campaign;
-    
+
+    int sessionsCount;
+
+    bool hasCampaignID = true;
+
     protected override async Task OnInitializedAsync()
     {
-        campaign = await MDBCampaign.GetByIdAsync(CampaignId);
+        if (CampaignId != null)
+        {
+            campaign = await MDBCampaign.GetByIdAsync(CampaignId);
+            sessionsCount = campaign.SessionIds.Count();
+            hasCampaignID = true;
+        }
+        else hasCampaignID = false;
     }
 }

@@ -11,6 +11,6 @@ namespace D_DNoteTaker.Components.Models
         [Required]
         public List<Location> Locations { get; set; } = new List<Location>();
 
-        public TextBox Description { get; set; }
+        public TextBox Description { get; set; } = new TextBox();
     }
 }
