@@ -40,7 +40,7 @@
 
     private async Task submit()
     {
-        EventNPC.Invoke(this, currentNPC);
+        EventNPC?.Invoke(this, currentNPC);
         await MDBNPCs.InsertOneAsync(currentNPC);
     }
 
