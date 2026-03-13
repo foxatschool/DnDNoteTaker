@@ -1,4 +1,5 @@
-﻿@inject IMongoRepository<NPCs> MDBNPCs
+﻿@page "/newnpc/{CurrentCampaginId}"
+@inject IMongoRepository<NPCs> MDBNPCs
 <h3>CreateNPC</h3>
 
 <EditForm OnValidSubmit="() => submit()" Model="currentNPC">
@@ -25,7 +26,7 @@
     <label for="languages">Languages: </label>
     <InputText id="languages" @bind-Value="currentNPC.Languages" />
 
-<button class="btn btn-primary">Create NPC</button>
+<button type="submit" class="btn btn-primary">Create NPC</button>
 </EditForm>
 
 <CreateTextBox @ref="editTextBox" textTitle="Description:" hideMainTitle="true"/>
@@ -33,14 +34,15 @@
 
 @code 
 {
+    [Parameter]
+    public string CurrentCampaginId { get; set; }
+
     private NPCs currentNPC = new NPCs();
     private CreateTextBox editTextBox;
 
-    public event EventHandler<NPCs> EventNPC;
-
     private async Task submit()
     {
-        EventNPC?.Invoke(this, currentNPC);
+        currentNPC.campaginId = CurrentCampaginId;
         await MDBNPCs.InsertOneAsync(currentNPC);
     }
 

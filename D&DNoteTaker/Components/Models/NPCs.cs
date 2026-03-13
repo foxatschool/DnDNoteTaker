@@ -8,6 +8,8 @@ namespace D_DNoteTaker.Components.Models
         [Required]
         public string Name { get; set; }
 
+        public string campaginId { get; set; }
+
         public TextBox? Description { get; set; }
 
         public string Gender { get; set; }
