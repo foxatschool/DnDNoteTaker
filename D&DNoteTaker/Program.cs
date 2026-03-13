@@ -16,49 +16,49 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddScoped<IMongoRepository<Testing>>((sp) => {
-    var client = new MongoClient(Environment.GetEnvironmentVariable("MONGODB_URI"));
+    var client = new MongoClient("mongodb+srv://default:password123!@user.xummolz.mongodb.net/?appName=User");
     var database = client.GetDatabase("Testing");
     MongoRepository<Testing> test = new MongoRepository<Testing>(database, "Testing");
     return test; 
     });
 
 builder.Services.AddScoped<IMongoRepository<Campaign>>((sp) => {
-    var client = new MongoClient(Environment.GetEnvironmentVariable("MONGODB_URI"));
+    var client = new MongoClient("mongodb+srv://default:password123!@user.xummolz.mongodb.net/?appName=User");
     var database = client.GetDatabase("Campaign");
     MongoRepository<Campaign> campaignData = new MongoRepository<Campaign>(database, "Campaign");
     return campaignData;
 });
 
 builder.Services.AddScoped<IMongoRepository<Location>>((sp) => {
-    var client = new MongoClient(Environment.GetEnvironmentVariable("MONGODB_URI"));
+    var client = new MongoClient("mongodb+srv://default:password123!@user.xummolz.mongodb.net/?appName=User");
     var database = client.GetDatabase("Campaign");
     MongoRepository<Location> locationData = new MongoRepository<Location>(database, "Location");
     return locationData;
 });
 
 builder.Services.AddScoped<IMongoRepository<NPCs>>((sp) => {
-    var client = new MongoClient(Environment.GetEnvironmentVariable("MONGODB_URI"));
+    var client = new MongoClient("mongodb+srv://default:password123!@user.xummolz.mongodb.net/?appName=User");
     var database = client.GetDatabase("Campaign");
     MongoRepository<NPCs> npcData = new MongoRepository<NPCs>(database, "NPCs");
     return npcData;
 });
 
 builder.Services.AddScoped<IMongoRepository<Region>>((sp) => {
-    var client = new MongoClient(Environment.GetEnvironmentVariable("MONGODB_URI"));
+    var client = new MongoClient("mongodb+srv://default:password123!@user.xummolz.mongodb.net/?appName=User");
     var database = client.GetDatabase("Campaign");
     MongoRepository<Region> regionData = new MongoRepository<Region>(database, "Region");
     return regionData;
 });
 
 builder.Services.AddScoped<IMongoRepository<Sessions>>((sp) => {
-    var client = new MongoClient(Environment.GetEnvironmentVariable("MONGODB_URI"));
+    var client = new MongoClient("mongodb+srv://default:password123!@user.xummolz.mongodb.net/?appName=User");
     var database = client.GetDatabase("Campaign");
     MongoRepository<Sessions> sessionData = new MongoRepository<Sessions>(database, "Sessions");
     return sessionData;
 });
 
 builder.Services.AddScoped<IMongoRepository<Worldbuilding>>((sp) => {
-    var client = new MongoClient(Environment.GetEnvironmentVariable("MONGODB_URI"));
+    var client = new MongoClient("mongodb+srv://default:password123!@user.xummolz.mongodb.net/?appName=User");
     var database = client.GetDatabase("Campaign");
     MongoRepository<Worldbuilding> worldbuildingData = new MongoRepository<Worldbuilding>(database, "Worldbuilding");
     return worldbuildingData;
@@ -74,7 +74,7 @@ builder.Services.AddIdentityMongoDbProvider<User>(
     },
     mongo =>
     {
-        mongo.ConnectionString = Environment.GetEnvironmentVariable("MONGODB_URI_LOGIN");
+        mongo.ConnectionString = "mongodb+srv://default:password123!@user.xummolz.mongodb.net/Campagin?appName=User";
     });
 
 builder.Services.AddCascadingAuthenticationState();
@@ -100,24 +100,5 @@ app.UseAuthorization();
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
-
-#region MongoDB Database Demo
-//var connectionString = Environment.GetEnvironmentVariable("MONGODB_URI");
-////var connectionString = "mongodb+srv://32tiptoes:14Foxgames@user.xummolz.mongodb.net/?appName=User";
-//if (connectionString == null)
-//{
-//    Console.WriteLine("You must set your 'MONGODB_URI' environment variable. To learn how to set it, see https://www.mongodb.com/docs/drivers/csharp/current/get-started/create-connection-string");
-//    Environment.Exit(0);
-//}
-//var client = new MongoClient(connectionString);
-//var collection = client.GetDatabase("sample_mflix").GetCollection<BsonDocument>("movies");
-//var filter = Builders<BsonDocument>.Filter.Eq("title", "Back to the Future");
-//var document = collection.Find(filter).First();
-//Console.WriteLine(document.ToJson(new JsonWriterSettings { Indent = true }));
-#endregion
-
-#region MongoDB write demo
-//IMongoCollection<Testing> demoCollection = client.GetDatabase("Tester").GetCollection<Testing>("Testing");
-#endregion
 
 app.Run();
