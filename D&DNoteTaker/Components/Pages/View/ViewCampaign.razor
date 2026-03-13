@@ -5,6 +5,14 @@
 
 <PageTitle>View Campaign</PageTitle>
 
+<h3>Note Page</h3>
+
+<div>
+    <textarea @bind="noteContent" @bind:event="oninput" placeholder="Type your notes here..."></textarea>
+</div>
+
+<p>Character count: @noteContent.ToCharArray().Length</p>
+
 @if (campaign is null)
 {
     <p>Loading campaign...</p>
@@ -33,6 +41,11 @@ else
 
     <div class="mt-3">
     </div>
+    @foreach(TextBox box in campaign.Boxes)
+    {
+        <h4>@box.Name</h4>
+        <textarea @bind="box.Text" @bind:event="oninput" placeholder="Type your notes here..."></textarea>
+    }
 }
 
 @code {
@@ -45,4 +58,6 @@ else
     {
         campaign = await MDBCampaign.GetByIdAsync(CampaignId);
     }
+
+    private string noteContent = "";
 }
