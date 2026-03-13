@@ -75,7 +75,7 @@
 
     private async Task addLocation(string locationId)
     {
-        if (locationId != null || locationId.IsWhiteSpace()) currentSession.Locations.Append(await MDBLocations.GetByIdAsync(locationId));
+        if (locationId != null || locationId.IsWhiteSpace()) currentSession.Locations.Add(await MDBLocations.GetByIdAsync(locationId));
     }
 
     private async Task addNPC(string NPC)
