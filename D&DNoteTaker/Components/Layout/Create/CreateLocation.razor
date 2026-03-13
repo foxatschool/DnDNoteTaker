@@ -28,12 +28,10 @@
 </EditForm>
 
 <hr/>
-<EditForm OnValidSubmit="() => addPOI()" Model="newPOI">
-    <label for="poi">Points of Intrest</label>
-    <InputText id="poi" @bind-Value="newPOI" />
-    
-    <button type="submit" class="btn btn-primary">Add POI</button>
-</EditForm>
+<input @bind="newPOI" />
+
+<button @onclick="addPOI">Add POI</button>
+
 
 <hr />
 <CreateTextBox @ref="editTextBox" hideMainTitle="true" textTitle="Location Description:"/>
