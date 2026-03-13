@@ -1,4 +1,7 @@
-﻿@inject IMongoRepository<Region> MDBRegion
+﻿@page "/newregion/{CurrentWorldBuildingId}"
+@inject IMongoRepository<Region> MDBRegion
+@inject NavigationManager navMan
+
 <h3>CreateRegion</h3>
 
 <EditForm OnValidSubmit="() => submit()" Model="title">
@@ -15,8 +18,10 @@
 
 @code 
 {
+    [Parameter]
+    public string CurrentWorldBuildingId { get; set; }
+
     Region region = new Region();
-    public event EventHandler<Region> EventRegion;
 
     private CreateLocation editLocation;
     private CreateTextBox editTextBox;
@@ -26,8 +31,9 @@
     private async Task submit()
     {
         region.Name = title;
-        EventRegion?.Invoke(this, region);
+        region.WorldBuildingId = CurrentWorldBuildingId;
         await MDBRegion.InsertOneAsync(region);
+        navMan.NavigateTo($"/worldbuilding/{CurrentWorldBuildingId}");
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -35,10 +41,6 @@
         if (firstRender && editTextBox != null)
         {
             editTextBox.EventBox += addTextBox;
-        }
-        if (firstRender && editLocation != null)
-        {
-            editLocation.EventLocation += addLocation;
         }
     }
 

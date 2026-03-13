@@ -5,6 +5,7 @@ namespace D_DNoteTaker.Components.Models
 {
     public class Region : Document
     {
+        public string WorldBuildingId { get; set; }
         [Required]
         public string Name { get; set; }
 

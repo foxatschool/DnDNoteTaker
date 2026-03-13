@@ -1,4 +1,4 @@
-﻿@page "/newlocation/{CurrentRegionId}"
+﻿@page "/newlocation/{CurrentCampaginId}/{CurrentRegionId}"
 @using D_DNoteTaker.Components.Models
 @inject IMongoRepository<Location> MDBLocation
 @inject NavigationManager navMan
@@ -40,6 +40,8 @@
 {
     [Parameter]
     public string CurrentRegionId { get; set; }
+    [Parameter]
+    public string CurrentCampaginId { get; set; }
 
     CreateTextBox? editTextBox;
     Location location = new Location();
@@ -48,6 +50,7 @@
     async Task submit()
     {
         location.RegionId = CurrentRegionId;
+        location.CampaginId = CurrentCampaginId;
         await MDBLocation.InsertOneAsync(location);
         navMan.NavigateTo($"/region/{CurrentRegionId}");
     }
