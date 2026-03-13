@@ -21,7 +21,7 @@ else
         <div class="tab-bar">
             @if (campaign.WorldbuildingId != null)
             {
-                <NavLink class="tab-button" href="@($"/worldbuilding/{campaign.WorldbuildingId}")">
+                <NavLink class="tab-button" href="@($"/worldbuilding/{campaign.WorldbuildingId}/{CampaignId}")">
                     <h3>Worldbuilding</h3>
                 </NavLink>
             }

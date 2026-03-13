@@ -21,6 +21,6 @@ namespace D_DNoteTaker.Components.Models
         public float? Population { get; set; }
 
         [Required]
-        public TextBox Description { get; set; }
+        public TextBox Description { get; set; } = new TextBox();
     }
 }

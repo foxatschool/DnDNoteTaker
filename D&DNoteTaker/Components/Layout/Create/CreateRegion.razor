@@ -1,45 +1,47 @@
-﻿@page "/newregion/{CurrentWorldBuildingId}"
+﻿@page "/newregion/{CurrentWorldBuildingId}/{CampaignId}"
 @inject IMongoRepository<Region> MDBRegion
 @inject IMongoRepository<Worldbuilding> MDBWorldBuilding
 @inject NavigationManager navMan
+@rendermode InteractiveServer
 
 <h3>CreateRegion</h3>
 
-<EditForm OnValidSubmit="() => submit()" Model="title">
+<EditForm OnValidSubmit="submit" Model="region" FormName="create-region">
     <label for="title">Region Title:</label>
-    <InputText id="title" @bind-Value="title"/>
+    <InputText id="title" @bind-Value="region.Name" />
 
     <button type="submit" class="btn btn-primary">Create Region</button>
 </EditForm>
 
 <CreateTextBox @ref="editTextBox" textTitle="Region Description:" hideMainTitle="true" />
 
-<hr/>
-<CreateLocation @ref="editLocation"/>
-
 @code 
 {
     [Parameter]
     public string CurrentWorldBuildingId { get; set; }
 
+    [Parameter]
+    public string CampaignId { get; set; }
+
     Region region = new Region();
 
-    private CreateLocation editLocation;
-    private CreateTextBox editTextBox;
+    private CreateTextBox? editTextBox;
 
-    private string title="";
+    // private string title="";
 
     private async Task submit()
     {
         Worldbuilding currentWorldBuilding = await MDBWorldBuilding.GetByIdAsync(CurrentWorldBuildingId);
         if(currentWorldBuilding != null)
         {
-            currentWorldBuilding.Regions.Append(region);
+            currentWorldBuilding.Regions ??= new List<Region>();
+            currentWorldBuilding.Regions.Add(region);
         }
-        region.Name = title;
+        // region.Name = title;
         region.WorldBuildingId = CurrentWorldBuildingId;
         await MDBRegion.InsertOneAsync(region);
-        navMan.NavigateTo($"/worldbuilding/{CurrentWorldBuildingId}");
+        await MDBWorldBuilding.ReplaceOneAsync(currentWorldBuilding);
+        navMan.NavigateTo($"/worldbuilding/{CurrentWorldBuildingId}/{CampaignId}");
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -53,11 +55,6 @@
     private void addTextBox(object? sender, TextBox textBox)
     {
         region.Description = textBox;
-    }
-
-    private void addLocation(object? sender, Location location)
-    {
-        region.Locations = region.Locations.Append(location).ToList();
     }
 
 }

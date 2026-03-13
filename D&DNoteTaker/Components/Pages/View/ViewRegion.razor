@@ -1,13 +1,10 @@
-﻿@using Microsoft.AspNetCore.Authorization
+﻿@page "/region/{RegionId}/{CampaignId}"
+@using Microsoft.AspNetCore.Authorization
 @using D_DNoteTaker.Components.Layout.Create
-@attribute [Authorize]
-
-@page "/region/{regionId}/{CampaignId}"
-@rendermode InteractiveServer
-
-@inject NavigationManager nav;
-
 @inject IMongoRepository<Region> RegionDB;
+@inject NavigationManager nav;
+@attribute [Authorize]
+@rendermode InteractiveServer
 
 @if(region == null)
 {
@@ -26,7 +23,7 @@ else{
 	}
 
 	<div>
-		<NavLink href="@($"/newlocation/{CampaginId}/{RegionId}")">
+		<NavLink href="@($"/newlocation/{CampaignId}/{RegionId}")">
 			<h3>Add New Location</h3>
 		</NavLink>
 	</div>
@@ -38,7 +35,7 @@ else{
 		get; set; } = "";
 
 	[Parameter]
-	public string CampaginId { get; set; }
+	public string CampaignId { get; set; }
 
 	private Region region;
 
