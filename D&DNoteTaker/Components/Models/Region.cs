@@ -9,7 +9,7 @@ namespace D_DNoteTaker.Components.Models
         public string Name { get; set; }
 
         [Required]
-        public List<Location> Locations { get; set; }
+        public List<Location> Locations { get; set; } = new List<Location>();
 
         public TextBox Description { get; set; }
     }

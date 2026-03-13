@@ -15,7 +15,7 @@
     <label for="population">Population: </label>
     <InputNumber id="populaion" TValue="float?" @bind-Value="location.Population"/>
 
-    <button type="submit" @onclick="() => submit()" class="btn btn-primary">Add Location</button>
+    <button type="submit"  class="btn btn-primary">Add Location</button>
 </EditForm>
 
 <EditForm OnValidSubmit="addPOI" Model="newPOI">
@@ -42,7 +42,7 @@
 
     void submit()
     {
-        EventLocation.Invoke(this, location);
+        EventLocation?.Invoke(this, location);
     }
 
     private void addTextBox(object? sender, TextBox textBox)

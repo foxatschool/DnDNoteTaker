@@ -14,9 +14,9 @@ namespace D_DNoteTaker.Components.Models
         [Required]
         public DateOnly DateOfSession { get; set; }
 
-        public List<Location>? Locations { get; set; }
+        public List<Location>? Locations { get; set; } = new List<Location>();
 
-        public List<NPCs>? NPCs { get; set; }
+        public List<NPCs>? NPCs { get; set; } = new List<NPCs>();
 
     }
 }

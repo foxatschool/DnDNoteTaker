@@ -17,6 +17,6 @@ namespace D_DNoteTaker.Components.Models
         public string WorldbuildingId { get; set; }
 
         [Required]
-        public List<string> SessionIds {  get; set; }
+        public List<string> SessionIds { get; set; } = new List<string>();
     }
 }
