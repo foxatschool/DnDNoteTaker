@@ -1,4 +1,7 @@
-﻿@inject IMongoRepository<Sessions> MDBSessions
+﻿@page "/newsession/{CurrentCampaginId}"
+@inject IMongoRepository<Sessions> MDBSessions
+@inject NavigationManager navMan
+
 <h3>CreateSessions</h3>
 
 <EditForm OnValidSubmit="() => submit()" Model="currentSession">
@@ -44,18 +47,20 @@
 
 @code
 {
+    [Parameter]
+    public string CurrentCampaginId { get; set; }
     private Sessions currentSession = new Sessions();
 
     private Location selectedLocation = new Location();
     private NPCs selectedNPC = new NPCs();
     private CreateTextBox editTextBox;
 
-    public event EventHandler<Sessions> eventSession;
 
     private async Task submit()
     {
-        eventSession?.Invoke(this, currentSession);
+        currentSession.CampaginId = CurrentCampaginId;
         await MDBSessions.InsertOneAsync(currentSession);
+        navMan.NavigateTo($"/campagin/{CurrentCampaginId}");
     }
     private void addTextBox(object? sender, TextBox textBox)
     {

@@ -5,6 +5,7 @@ namespace D_DNoteTaker.Components.Models
 {
     public class Sessions : Document
     {
+        public string CampaginId { get; set; }
         [Required]
         public int SessionNum { get; set; }
 
