@@ -1,4 +1,5 @@
-﻿<h3>CreateSessions</h3>
+﻿@inject IMongoRepository<Sessions> MDBSessions
+<h3>CreateSessions</h3>
 
 <EditForm OnValidSubmit="() => submit()" Model="currentSession">
     <label for="sessionNum">Session Number:</label>
@@ -10,7 +11,7 @@
     <button type="submit" class="btn btn-primary">Create Session</button>
 </EditForm>
 
-@if (currentSession.Locations != null)
+@if (currentSession.Locations != null && currentSession.Locations.Count() > 0)
 {
     <EditForm Model="selectedLocation" OnValidSubmit="() => addLocation(selectedLocation)">
         <InputSelect TValue="Location" @bind-Value="selectedLocation">
@@ -25,22 +26,36 @@
     </EditForm>
 }
 
-<CreateNPC @ref="editNPC" />
+@if (currentSession.NPCs != null && currentSession.NPCs.Count() > 0)
+{
+    <EditForm Model="selectedNPC" OnValidSubmit="() => addNPC(selectedNPC)">
+        <InputSelect TValue="NPCs" @bind-Value="selectedNPC">
+            @foreach (NPCs npc in currentSession.NPCs)
+            {
+                <option value="@npc">@npc.Name</option>
+            }
+        </InputSelect>
+
+        <button type="submit">Add NPC</button>
+    </EditForm>
+}
+
 <CreateTextBox @ref="editTextBox" mainTitle="Session Title:" textTitle="Description:" />
 
 @code
 {
     private Sessions currentSession = new Sessions();
 
-    private Location selectedLocation;
-    private CreateNPC editNPC;
+    private Location selectedLocation = new Location();
+    private NPCs selectedNPC = new NPCs();
     private CreateTextBox editTextBox;
 
     public event EventHandler<Sessions> eventSession;
 
-    private void submit()
+    private async Task submit()
     {
-        eventSession.Invoke(this, currentSession);
+        eventSession?.Invoke(this, currentSession);
+        await MDBSessions.InsertOneAsync(currentSession);
     }
     private void addTextBox(object? sender, TextBox textBox)
     {
@@ -48,11 +63,12 @@
     }
     private void addLocation(Location location)
     {
-        currentSession.Locations.Append(location);
+        if (location != null) currentSession.Locations.Append(location);
+
     }
-    private void addNPC(object? sender, NPCs NPC)
+    private void addNPC(NPCs NPC)
     {
-        currentSession.NPCs.Add(NPC);
+        if (NPC != null) currentSession.NPCs.Append(NPC);
     }
 
     protected override void OnAfterRender(bool firstRender)
@@ -62,10 +78,6 @@
             if (editTextBox != null)
             {
                 editTextBox.EventBox += addTextBox;
-            }
-            if (editNPC != null)
-            {
-                editNPC.EventNPC += addNPC;
             }
         }
 

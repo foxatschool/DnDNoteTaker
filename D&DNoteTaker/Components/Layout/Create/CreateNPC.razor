@@ -1,4 +1,4 @@
-﻿
+﻿@inject IMongoRepository<NPCs> MDBNPCs
 <h3>CreateNPC</h3>
 
 <EditForm OnValidSubmit="() => submit()" Model="currentNPC">
@@ -38,9 +38,10 @@
 
     public event EventHandler<NPCs> EventNPC;
 
-    private void submit()
+    private async Task submit()
     {
         EventNPC.Invoke(this, currentNPC);
+        await MDBNPCs.InsertOneAsync(currentNPC);
     }
 
     protected override void OnAfterRender(bool firstRender)
