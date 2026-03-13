@@ -1,5 +1,6 @@
 ﻿@page "/newregion/{CurrentWorldBuildingId}"
 @inject IMongoRepository<Region> MDBRegion
+@inject IMongoRepository<Worldbuilding> MDBWorldBuilding
 @inject NavigationManager navMan
 
 <h3>CreateRegion</h3>
@@ -30,6 +31,11 @@
 
     private async Task submit()
     {
+        Worldbuilding currentWorldBuilding = await MDBWorldBuilding.GetByIdAsync(CurrentWorldBuildingId);
+        if(currentWorldBuilding != null)
+        {
+            currentWorldBuilding.Regions.Append(region);
+        }
         region.Name = title;
         region.WorldBuildingId = CurrentWorldBuildingId;
         await MDBRegion.InsertOneAsync(region);
