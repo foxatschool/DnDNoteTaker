@@ -21,13 +21,4 @@ Technical Information:
 
 This software uses MongoDB Atlas as a backend database, Blazor ASP.NET Core as a frontend, and has some steps for deployment to complete on Microsoft Azure.
 
-What works:
-Campaigns can be saved to the database.
-Campaigns can be viewed.
-Textboxes can be viewed.
-
-What doesn’t work:
-Creating all other classes (they don’t save to the database).
-Viewing all other classes.
-
 Thank you for viewing DnDNoteTaker!
