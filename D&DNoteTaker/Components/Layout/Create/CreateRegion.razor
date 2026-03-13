@@ -4,6 +4,8 @@
 <EditForm OnValidSubmit="() => submit()" Model="title">
     <label for="title">Region Title:</label>
     <InputText id="title" @bind-Value="title"/>
+
+    <button class="btn btn-primary" @onclick="() => submit()">Create Region</button>
 </EditForm>
 
 <CreateLocation @ref="editLocation"/>

@@ -7,6 +7,8 @@
 
     <label for="Date">Session Date:</label>
     <InputDate TValue="DateOnly" @bind-Value="currentSession.DateOfSession" />
+
+    <button type="submit" @onclick="() => submit()" class="btn btn-primary">Create Session</button>
 </EditForm>
 
 <CreateLocation @ref="editLoacation" />

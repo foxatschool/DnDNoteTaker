@@ -14,13 +14,16 @@
 
     <label for="population">Population: </label>
     <InputNumber id="populaion" TValue="float?" @bind-Value="location.Population"/>
+
+    <button type="submit" @onclick="() => submit()" class="btn btn-primary">Add Location</button>
 </EditForm>
 
 <EditForm OnValidSubmit="addPOI" Model="newPOI">
     <label for="poi">Points of Intrest</label>
     <InputText id="poi" @bind-Value="newPOI" />
 
-    <button type="submit" class="btn btn-primary">Add POI</button>
+    
+    <button type="submit" @onclick="() => addPOI()" class="btn btn-primary">Add POI</button>
 </EditForm>
 
 <hr />
