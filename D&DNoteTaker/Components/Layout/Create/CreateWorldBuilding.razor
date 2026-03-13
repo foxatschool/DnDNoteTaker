@@ -9,13 +9,14 @@
 <EditForm OnValidSubmit="() => submit()" Model="currentWorldbuilding">
     <label id="Name">World Name:</label>
     <InputText id="Name" @bind-Value="currentWorldbuilding.Name" />
-
+    
 </EditForm>
 
 <CreateRegion @ref="editRegion"/>
 
 <CreateTextBox @ref="textEditor" textTitle="Describe Event:" />
 
+<button class="btn btn-primary" @onclick="() => submit()">Create World</button>
 
 
 @code

@@ -23,6 +23,8 @@
 
 <CreateTextBox @ref="editTextBox" textTitle="Description:"/>
 
+<button class="btn btn-primary" @onclick="() => submit()">Create NPC</button>
+
 @code 
 {
     private NPCs currentNPC = new NPCs();
